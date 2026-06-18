@@ -127,6 +127,7 @@
   .nav-item.active{background:var(--blue-bg);color:var(--blue);box-shadow:inset 3px 0 0 var(--blue)}
   .nav-item .dot{width:7px;height:7px;border-radius:50%;background:var(--pink);flex:none}
   .content{flex:1;padding:8px 48px 24px;min-width:0;overflow-y:auto;display:flex;flex-direction:column}
+  .content>*{flex-shrink:0}
   .empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--sec);padding:40px}
   .empty .big{font-size:40px;margin-bottom:10px} .empty h3{font-size:18px;font-weight:500;color:var(--ink);margin-bottom:6px} .empty p{font-size:14px;max-width:380px} .empty .arrow{margin-top:14px;font-size:13px;color:var(--blue);font-weight:500}
 
@@ -137,6 +138,7 @@
   .head-actions{display:flex;align-items:center;gap:18px;flex:none}
 
   .cbx-head{font-size:14px;font-weight:500;color:var(--ink);margin:2px 0 10px;display:flex;align-items:center}
+  .head-sub{font-size:12px;font-weight:400;color:var(--tert);margin:0 0 10px;line-height:1.4}
   .cap-tip{position:relative;display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;margin-left:6px;color:var(--tert);cursor:help;font-size:13px;font-weight:400} .cap-tip:hover,.cap-tip:focus{color:var(--sec);outline:none}
   .cap-tip-bub{position:absolute;top:calc(100% + 8px);left:0;width:max-content;max-width:300px;background:#091E42;color:#fff;font-size:12px;line-height:16px;font-weight:400;padding:4px 8px;border-radius:4px;box-shadow:0 0 1px rgba(9,30,66,.31),0 4px 8px -2px rgba(9,30,66,.25);opacity:0;visibility:hidden;transform:translateY(4px);transition:opacity .12s ease,transform .12s ease;z-index:40;text-align:left;white-space:normal;pointer-events:none}
   .cap-tip:hover .cap-tip-bub,.cap-tip:focus .cap-tip-bub{opacity:1;visibility:visible;transform:translateY(0)}
@@ -148,7 +150,7 @@
   .cbx.dis{background:var(--n3);border-color:var(--border);color:var(--n5);cursor:not-allowed}
   .cbx.on.dis{background:var(--green-dis);border-color:var(--green-dis);color:#fff}
   .cbx-row.dis .cbx-lbl{color:var(--sec)} .cbx-row.dis .cbx-sub{color:var(--tert)}
-  .cbx-lbl{font-size:14px;font-weight:500;color:var(--ink)} .cbx-sub{font-size:12px;color:var(--sec);margin-top:2px}
+  .cbx-lbl{font-size:14px;font-weight:500;color:var(--ink)} .cbx-sub{font-size:12px;font-weight:400;color:var(--tert);margin-top:2px}
   .cbx-state{margin-left:auto;font-size:12px;font-weight:500} .cbx-state.grp{color:var(--green9)} .cbx-state.ind{color:var(--n9)} .cbx-state.muted{color:var(--tert)}
   .cbx-row.cat-parent{cursor:pointer} .cbx-row.cat-parent:hover{background:var(--n1)}
   .cbx .caret,.caret{width:24px;flex:none;color:var(--ink);font-size:17px;font-weight:700;text-align:center;line-height:1}
@@ -217,7 +219,7 @@
     <label>Demo scenario</label>
     <select id="scenarioSel" onchange="setScenario(this.value)">
       <option value="0">Scenario 1 — Org active · "Redeem group points" added → editable</option>
-      <option value="1">Scenario 2 — Org active · no group action added → system assumes Individual</option>
+      <option value="1">Scenario 2 — Org active · no “Redeem group points” action added → system assumes Individual</option>
       <option value="2">Scenario 3 — Org inactive → action disabled · Individual</option>
     </select>
     <span id="scenarioOut" class="scn-out"></span>
@@ -229,7 +231,7 @@
       <div class="logo">▦ Loyalty+</div>
       <div class="org"><span class="av">T</span> Tata Digital SIT ▾</div>
       <nav><a class="active">Programs</a><a>Promotions</a><a>Creatives</a></nav>
-      <div class="right"><span title="Settings">⚙</span><span>✦</span><span class="av2">◍</span></div>
+      <div class="right"><span title="Organisation settings" style="cursor:pointer" onclick="openOrgSettings()">⚙</span><span>✦</span><span class="av2">◍</span></div>
     </div>
     <div class="thead">
       <div style="display:flex;align-items:flex-start">
@@ -257,24 +259,11 @@
     <div class="panel">
       <div class="panel-head">
         <h2 id="panelTitle">Advanced settings</h2>
-        <div class="org">Organisation <b>Tata Digital SIT</b></div>
+        <div class="org" id="panelCrumb">Organisation <b>Tata Digital SIT</b></div>
         <button class="xbtn" title="Close" onclick="closeSettings()">&times;</button>
       </div>
       <div class="panel-body">
-        <nav class="nav">
-          <div class="nav-item" onclick="selectSection('generic','Tiers')">Tiers</div>
-          <div class="nav-item" onclick="selectSection('generic','Points')">Points</div>
-          <div class="nav-item" onclick="selectSection('generic','Payment methods')">Payment methods</div>
-          <div class="nav-item" onclick="selectSection('generic','Communication Channels')">Communication Channels</div>
-          <div class="nav-item" onclick="selectSection('generic','Liability settings')">Liability settings</div>
-          <div class="nav-item" onclick="selectSection('generic','Subscription Program')">Subscription Program</div>
-          <div class="nav-item" onclick="selectSection('generic','Delayed accrual')">Delayed accrual</div>
-          <div class="nav-item" onclick="selectSection('generic','Reward currencies')">Reward currencies</div>
-          <div class="nav-item" onclick="selectSection('generic','Points allocation limits')">Points allocation limits</div>
-          <div class="nav-item" onclick="selectSection('generic','Loyalty promotions')">Loyalty promotions</div>
-          <div class="nav-item" id="navRedemption" onclick="selectSection('redemption')">Redemption scope <span class="dot"></span></div>
-          <div class="nav-item" id="navPriority" onclick="selectSection('priority')">Redemption priority <span class="dot"></span></div>
-        </nav>
+        <nav class="nav" id="settingsNav"></nav>
         <div class="content" id="advContent"></div>
       </div>
     </div>
@@ -288,7 +277,7 @@
   let mode='view', status='Live';
   // Redemption scope — by point-source category. group:true = Shared (can travel).
   let CATS=[
-    {label:"Base / everyday points",sub:"Regular transaction points",group:true},
+    {label:"Base points",sub:"Regular transaction points",group:true},
     {label:"Promotional points",sub:"From loyalty promotions",expandable:true,open:false,unit:"promotion",query:"",promos:[
       {label:"IHCL Stay Promotion",sub:"Bill promo",group:false},
       {label:"Weekend Spend Bonus",sub:"Bill promo",group:true},
@@ -302,8 +291,9 @@
       {label:"Referral Bonus",sub:"Customer promo",group:false}
     ]},
     {label:"Goodwill points",sub:"Member Care adjustments",group:false},
+    {label:"API-issued points",sub:"Issue Reward Currency API",group:false},
     {label:"Imported points",sub:"Data import",group:true},
-    {label:"Campaign points",sub:"Engage+ campaigns",expandable:true,open:false,unit:"campaign",query:"",promos:[
+    {label:"Campaign/Journey points",sub:"Engage+ campaigns",expandable:true,open:false,unit:"campaign/journey",plural:"campaigns/journeys",query:"",promos:[
       {label:"Diwali Cashback",sub:"Engage+ campaign",group:true},
       {label:"App Install Bonus",sub:"Engage+ campaign",group:false},
       {label:"Refer-a-Friend",sub:"Engage+ campaign",group:false},
@@ -328,15 +318,15 @@
   let SCi=0;
   function gAllowed(){const s=SCENARIOS[SCi];return s.org&&s.added&&s.branch==='True';}
   function gReason(){const s=SCENARIOS[SCi];
-    if(!s.org) return `Group redemption is inactive in Organisation settings — the "Redeem group points" action is disabled in the workflow, so points redeem individually.`;
-    return `No "Redeem group points" action is configured in this program's workflow, so the system assumes Individual redemption for every points type.`;}
-  function setScenario(i){SCi=+i;if(!gAllowed())mode='view';applyScenario();renderScn();renderBuilder();const ov=document.getElementById('setOverlay');if(ov&&ov.classList.contains('open')){if(document.getElementById('navRedemption').classList.contains('active'))renderRedemption();if(document.getElementById('navPriority').classList.contains('active'))renderPriority();}}
+    if(!s.org) return `Redemption across programs is inactive in Organisation settings — the "Redeem group points" action is disabled in the workflow, so points redeem within the program.`;
+    return `No "Redeem group points" action is configured in this program's workflow, so the system assumes Individual redemption for all points.`;}
+  function setScenario(i){SCi=+i;if(!gAllowed())mode='view';applyScenario();renderScn();renderBuilder();const ov=document.getElementById('setOverlay');if(ov&&ov.classList.contains('open')){const nr=document.getElementById('navRedemption'),np=document.getElementById('navPriority');if(nr&&nr.classList.contains('active'))renderRedemption();if(np&&np.classList.contains('active'))renderPriority();}}
   function renderScn(){
     const s=SCENARIOS[SCi];
     document.getElementById('scenarioOut').innerHTML=gAllowed()?'→ <b>checkboxes editable</b> in Redemption scope':'→ <b>locked to Individual</b>';
     const wf=document.getElementById('wfNote');if(!wf)return;
-    if(!s.org){wf.className='note warn';wf.innerHTML=`<span class="ic">ⓘ</span><span><span class="pfx">Note:&nbsp;</span>Group redemption is inactive in Organisation settings, so the "Redeem group points" action is disabled in this workflow. Enable group redemption in Organisation settings to use it.</span>`;}
-    else if(!s.added){wf.className='note warn';wf.innerHTML=`<span class="ic">ⓘ</span><span><span class="pfx">Assumption:&nbsp;</span>No "Redeem group points" action is configured here, so the <b>system assumes Individual</b> redemption for every points type. Add the action on the True branch to configure per-type scope.</span>`;}
+    if(!s.org){wf.className='note warn';wf.innerHTML=`<span class="ic">ⓘ</span><span><span class="pfx">Note:&nbsp;</span>Redemption across programs is inactive in Organisation settings, so the "Redeem group points" action is disabled in this workflow. Enable it in Organisation settings to use it.</span>`;}
+    else if(!s.added){wf.className='note warn';wf.innerHTML=`<span class="ic">ⓘ</span><span><span class="pfx">Assumption:&nbsp;</span>No "Redeem group points" action is configured here, so the <b>system assumes Individual</b> redemption for all points. Add the action on the True branch to configure per-type scope.</span>`;}
     else{wf.className='note tips';wf.innerHTML=`<span class="ic">💡</span><span><span class="pfx">Tips:&nbsp;</span>The per-points-type control lives under this program's <b>Advanced settings › Redemption scope</b>. &nbsp;<button class="cta" onclick="openSettings('redemption')">Open Redemption scope ›</button></span>`;}
   }
 
@@ -357,7 +347,7 @@
     const mid=`<div class="bcol"><div class="scope-lbl">Scope</div><div class="scope-sub">3 Scope(s) selected</div>${cards}<div class="col-foot"><button class="btn-out" onclick="addCondition()">＋ Condition</button></div></div>`;
     const ico=n=>n.indexOf('Transfer')===0?'🔁':(n.indexOf('Redeem')===0?'🏆':'🎫');
     const whens=c.whens.map((w,wi)=>{
-      const acts=w.actions.length?w.actions.map((a,ai)=>`<div class="action-chip pos ${a.disabled?'dis':''}" style="margin-bottom:${a.disabled?'4px':'10px'}"><span class="tro">${ico(a.name)}</span><span class="nm">${a.name}</span><span class="st">${a.strategy}</span>${a.disabled?'':`<span class="dots" onclick="toggleChipMenu(${wi},${ai})">⋯</span>`}${(!a.disabled&&B.openMenu==='c'+wi+'_'+ai)?`<div class="menu" style="right:6px;top:46px"><div onclick="event.stopPropagation();openEditDrawer(${wi},${ai})">Edit action</div><div class="del" onclick="event.stopPropagation();deleteAction(${wi},${ai})">Delete action</div></div>`:''}</div>${a.disabled?'<div class="dis-note">🔒 Disabled — group redemption is inactive in Organisation settings.</div>':''}`).join(''):`<div class="empty-act">No actions yet — add one below.</div>`;
+      const acts=w.actions.length?w.actions.map((a,ai)=>`<div class="action-chip pos ${a.disabled?'dis':''}" style="margin-bottom:${a.disabled?'4px':'10px'}"><span class="tro">${ico(a.name)}</span><span class="nm">${a.name}</span><span class="st">${a.strategy}</span>${a.disabled?'':`<span class="dots" onclick="toggleChipMenu(${wi},${ai})">⋯</span>`}${(!a.disabled&&B.openMenu==='c'+wi+'_'+ai)?`<div class="menu" style="right:6px;top:46px"><div onclick="event.stopPropagation();openEditDrawer(${wi},${ai})">Edit action</div><div class="del" onclick="event.stopPropagation();deleteAction(${wi},${ai})">Delete action</div></div>`:''}</div>${a.disabled?'<div class="dis-note">🔒 Disabled — redemption across programs is inactive in Organisation settings.</div>':''}`).join(''):`<div class="empty-act">No actions yet — add one below.</div>`;
       const header=wi===0?'':`<div class="when-bar"><span>When</span><span class="x" onclick="removeWhen(${wi})">✕</span></div>`;
       return `${header}<div class="when-row"><span>Expression is</span><span class="seg"><b class="${w.branch==='True'?'on':'off'}" onclick="setWhenBranch(${wi},'True')">True</b><s class="${w.branch==='False'?'on':'off'}" onclick="setWhenBranch(${wi},'False')">False</s></span></div>${acts}<div style="margin:12px 0 20px"><span class="addact" onclick="openAddDrawer(${wi})">＋ Add action</span></div>`;
     }).join('');
@@ -387,7 +377,7 @@
     const X=`<button onclick="closeDrawer()" style="border:none;background:transparent;font-size:22px;cursor:pointer;color:var(--ink)">&times;</button>`;
     if(DR.mode==='add'){
       const cards=REDEEM_ACTIONS.map((a,i)=>{
-        if(!SCENARIOS[SCi].org && a.label==='Redeem group points') return `<div class="act-card dis tip-host"><span class="dim"><span class="ai2">${a.ic}</span><span>${a.label}</span></span><span class="tip">Group redemption is inactive in Organisation settings. Enable it to add this action.</span></div>`;
+        if(!SCENARIOS[SCi].org && a.label==='Redeem group points') return `<div class="act-card dis tip-host"><span class="dim"><span class="ai2">${a.ic}</span><span>${a.label}</span></span><span class="tip">Redemption across programs is inactive in Organisation settings. Enable it to add this action.</span></div>`;
         return `<div class="act-card ${DR.selected===i?'sel':''}" onclick="selectActCard(${i})"><span class="ai2">${a.ic}</span><span>${a.label}</span>${DR.selected===i?'<span class="chk">✓</span>':''}</div>`;
       }).join('');
       host.innerHTML=`<div class="dr-back" onclick="closeDrawer()"></div><div class="drawer"><div class="dr-head"><h3>Add action</h3>${X}</div><div class="dr-body">${cards}</div><div class="dr-foot"><button class="btn btn-primary" ${DR.selected!=null?'':'disabled'} onclick="saveDrawer()">Save</button></div></div>`;
@@ -401,15 +391,24 @@
 
   /* ---- advanced settings ---- */
   function setStep(n){document.getElementById('s2').className=n>=2?'on':'';document.getElementById('s3').className=n>=3?'on':'';}
-  function openSettings(target){document.getElementById('setOverlay').classList.add('open');document.body.style.overflow='hidden';setStep(2);selectSection('redemption');}
+  let settingsLevel='program';
+  const PROG_NAV=[{k:'generic',l:'Tiers'},{k:'generic',l:'Points'},{k:'generic',l:'Payment methods'},{k:'generic',l:'Communication Channels'},{k:'generic',l:'Loyalty promotions'},{k:'generic',l:'Friends & Family'},{k:'generic',l:'Delayed accrual'},{k:'redemption',l:'Redemption scope',id:'navRedemption',dot:true}];
+  const ORG_NAV=[{k:'generic',l:'Points trading & expiry'},{k:'generic',l:'Extended fields'},{k:'priority',l:'Redemption priority',id:'navPriority',dot:true}];
+  function renderSettingsNav(){
+    const items=settingsLevel==='org'?ORG_NAV:PROG_NAV;
+    document.getElementById('settingsNav').innerHTML=items.map(it=>`<div class="nav-item" ${it.id?`id="${it.id}"`:''} onclick="selectSection('${it.k}'${it.k==='generic'?`,'${it.l}'`:''})">${it.l}${it.dot?' <span class="dot"></span>':''}</div>`).join('');
+  }
+  function openSettings(target){settingsLevel='program';document.getElementById('panelCrumb').innerHTML='Program <b>Tata NeuPass</b> · Tata Digital SIT';renderSettingsNav();document.getElementById('setOverlay').classList.add('open');document.body.style.overflow='hidden';setStep(2);selectSection('redemption');}
+  function openOrgSettings(){settingsLevel='org';document.getElementById('panelCrumb').innerHTML='Organisation <b>Tata Digital SIT</b>';renderSettingsNav();document.getElementById('setOverlay').classList.add('open');document.body.style.overflow='hidden';setStep(2);selectSection('priority');}
   function closeSettings(){document.getElementById('setOverlay').classList.remove('open');document.body.style.overflow='';setStep(1);}
   function clearNav(){document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));}
-  function renderEmpty(){document.getElementById('advContent').innerHTML=`<div class="empty"><div class="big">⚙️</div><h3>Choose a setting to configure</h3><p>Select a section from the left. <b>Redemption scope</b> is new — set group vs. individual redemption per points type.</p><div class="arrow">← Open “Redemption scope”</div></div>`;}
+  function renderEmpty(){document.getElementById('advContent').innerHTML=`<div class="empty"><div class="big">⚙️</div><h3>Choose a setting to configure</h3><p>Select a section from the left. <b>Redemption scope</b> is new — set Shared vs. Individual redemption per points source.</p><div class="arrow">← Open “Redemption scope”</div></div>`;}
   function selectSection(kind,label){
     setStep(kind==='redemption'||kind==='priority'?3:2);clearNav();
-    if(kind==='redemption'){document.getElementById('navRedemption').classList.add('active');document.getElementById('panelTitle').textContent='Advanced settings: Redemption scope';renderRedemption();}
-    else if(kind==='priority'){document.getElementById('navPriority').classList.add('active');document.getElementById('panelTitle').textContent='Advanced settings: Redemption priority';renderPriority();}
-    else{[...document.querySelectorAll('.nav-item')].find(n=>n.textContent.trim().startsWith(label))?.classList.add('active');document.getElementById('panelTitle').textContent='Advanced settings: '+label;document.getElementById('advContent').innerHTML=`<div class="sec-head"><div><h2>${label}</h2><p>This section already exists in Loyalty+. It isn’t part of this prototype — the focus here is <b>Redemption scope</b>.</p></div></div><div class="note tips"><span class="ic">💡</span><span><span class="pfx">Tips:&nbsp;</span>Open <b>Redemption scope</b> from the left to see the new configuration.</span></div>`;}
+    const pre=settingsLevel==='org'?'Organisation settings':'Advanced settings';
+    if(kind==='redemption'){document.getElementById('navRedemption').classList.add('active');document.getElementById('panelTitle').textContent=pre+': Redemption scope';renderRedemption();}
+    else if(kind==='priority'){document.getElementById('navPriority').classList.add('active');document.getElementById('panelTitle').textContent=pre+': Redemption priority';renderPriority();}
+    else{[...document.querySelectorAll('.nav-item')].find(n=>n.textContent.trim().startsWith(label))?.classList.add('active');document.getElementById('panelTitle').textContent=pre+': '+label;document.getElementById('advContent').innerHTML=`<div class="sec-head"><div><h2>${label}</h2><p>This section already exists in Loyalty+. It isn’t part of this prototype.</p></div></div><div class="note tips"><span class="ic">💡</span><span><span class="pfx">Tips:&nbsp;</span>${settingsLevel==='org'?'Open <b>Redemption priority</b> from the left to see the new configuration.':'Open <b>Redemption scope</b> from the left to see the new configuration.'}</span></div>`;}
   }
 
   /* ---- redemption scope (single program, checkbox) ---- */
@@ -417,14 +416,14 @@
     document.getElementById('advContent').innerHTML=`
       <div class="sec-head">
         <div>
-          <h2>Define redemption scope by points category</h2>
+          <h2>Define redemption scope by points source</h2>
           <div class="prog2">Program: <b>Tata NeuPass</b></div>
-          <p>Choose which categories of points earned in this program can be redeemed across the group. Unchecked categories stay <b>Individual</b> — redeemable only within this program. Promotional points can be set per specific promotion.</p>
+          <p>Choose which points sources can be redeemed across the multi-loyalty program (MLP). Unchecked sources stay <b>Individual</b> — usable only in this program.</p>
         </div>
         <div class="head-actions"></div>
       </div>
       <div class="note pending" id="pendingNote" style="display:none"><span class="ic">⏱</span><span><span class="pfx">Pending:&nbsp;</span>Changes submitted for approval. They go live once an approver signs off.</span></div>
-      <div class="cbx-head">Redeemable across the group — by points category${gAllowed()?'':infoTip(gReason()+' Every category stays Individual until this is resolved, so all options are unchecked and read-only.')}</div>
+      <div class="cbx-head">Redeemable across the multi-loyalty program (MLP) — by points source${gAllowed()?'':infoTip(gReason()+' All points are handled as Individual until this is resolved, so all options are unchecked and read-only.')}</div>
       <div class="cbx-list" id="cbxList"></div>
       <div class="scope-foot" id="scopeFoot"></div>`;
     renderCats();renderFoot();
@@ -455,10 +454,10 @@
         h+=`<div class="cbx-row cat-parent ${e?'edit':''}" onclick="toggleExpand(${i})"><span class="caret">${c.open?'▾':'▸'}</span>${pbox}<div><div class="cbx-lbl">${c.label}</div><div class="cbx-sub">${c.sub} · set all, or per ${unit}</div></div><span class="cbx-state muted">${gAllowed()?summ:'Individual'}</span></div>`;
         if(c.open){
           const cq=c.query||'';
-          h+=`<div class="promo-search"><span style="color:var(--sec);font-size:13px">🔍</span><input id="psearch-${i}" type="text" placeholder="Search ${unit}s…" value="${cq.replace(/"/g,'&quot;')}" oninput="filterPromos(${i},this.value)"></div>`;
+          h+=`<div class="promo-search"><span style="color:var(--sec);font-size:13px">🔍</span><input id="psearch-${i}" type="text" placeholder="Search ${c.plural||unit+'s'}…" value="${cq.replace(/"/g,'&quot;')}" oninput="filterPromos(${i},this.value)"></div>`;
           const q=cq.trim().toLowerCase();
           const matches=c.promos.map((pr,j)=>({pr,j})).filter(o=>!q||o.pr.label.toLowerCase().includes(q)||o.pr.sub.toLowerCase().includes(q));
-          if(matches.length===0){h+=`<div class="promo-empty"><div class="pe-ic">🔍</div><div class="pe-t">No ${unit}s match “${cq}”</div><div class="pe-s">Check the spelling or try a different name or type.</div><button class="pe-clear" onclick="filterPromos(${i},'')">Clear search</button></div>`;}
+          if(matches.length===0){h+=`<div class="promo-empty"><div class="pe-ic">🔍</div><div class="pe-t">No ${c.plural||unit+'s'} match “${cq}”</div><div class="pe-s">Check the spelling or try a different name or type.</div><button class="pe-clear" onclick="filterPromos(${i},'')">Clear search</button></div>`;}
           matches.forEach(({pr,j})=>{
             const on=gAllowed()?pr.group:false, dis=!gAllowed();
             h+=`<div class="cbx-row sub ${e?'edit':''} ${dis?'dis':''}">${box(on,e,dis,`togglePromo(${i},${j})`)}<div><div class="cbx-lbl">${pr.label}</div><div class="cbx-sub">${pr.sub}</div></div>${stateTag(on,dis)}</div>`;
@@ -483,7 +482,7 @@
   function submitForApproval(){savedCATS=JSON.parse(JSON.stringify(CATS));status='Awaiting';renderRedemption();toast('Redemption scope submitted for approval.');}
 
   /* ---- redemption priority (related CR) ---- */
-  const PROGRAMS=[{name:'Tata NeuPass',note:'Umbrella program'},{name:'Taj · IHCL',note:'Brand program'},{name:'Tata CLiQ',note:'Brand program'}];
+  const PROGRAMS=[{name:'Tata NeuPass',note:'Default program'},{name:'Taj · IHCL',note:''},{name:'Tata CLiQ',note:''}];
   let priMode='exp';                 // 'exp' = expiry only (backend), 'pri' = priority first, 'exppri' = expiry + priority
   let priOrder=[0,1,2];              // indices into PROGRAMS, top = highest priority
   let revOrder=[0,1,2];              // partial-reversal credit order, top = credited back first
@@ -496,24 +495,22 @@
         <div>
           <h2>Set redemption priority</h2>
           <div class="prog2">Across programs · <b>Tata Digital SIT</b></div>
-          <p>When a group redemption can draw from more than one program, this decides the order points are spent in.</p>
+          <p>When a redemption can draw from more than one program in the MLP, this decides the order points are redeemed in.</p>
         </div>
         <div class="head-actions"></div>
       </div>
-      ${gAllowed()
-        ?`<div class="note tips"><span class="ic">💡</span><span><span class="pfx">Tips:&nbsp;</span>Keep <b>Expiry</b> unless a brand needs a specific program spent first (e.g. employee/wage points) — use <b>Priority first</b>, or <b>Expiry + priority</b> to let expiry lead and ranking break ties.</span></div>`
-        :`<div class="note warn"><span class="ic">ⓘ</span><span><span class="pfx">Note:&nbsp;</span>${gReason()} Priority only applies to group redemption, so it's read-only until this is resolved.</span></div>`}
+      ${gAllowed()?''
+        :`<div class="note warn"><span class="ic">ⓘ</span><span><span class="pfx">Note:&nbsp;</span>${gReason()} Priority applies only when redemption across programs is active, so it's read-only until this is resolved.</span></div>`}
       <div class="note pending" id="priPending" style="display:none"><span class="ic">⏱</span><span><span class="pfx">Pending:&nbsp;</span>Changes submitted for approval. They go live once an approver signs off.</span></div>
-      <div class="cbx-head">When points could come from more than one program, decide by</div>
+      <div class="cbx-head">When points could come from more than one program, decide based on</div>
       <div class="radg" id="priSeg" role="radiogroup"></div>
-      <div class="note tips" id="priHint" style="background:var(--n1);color:var(--sec)"></div>
       <div id="priRankWrap">
-        <div class="cbx-head" style="margin-top:6px">Priority order <span style="font-weight:400;color:var(--tert)">— rank the programs (top spends first)</span></div>
+        <div class="cbx-head" style="margin:6px 0 3px">Priority order</div><div class="head-sub">Rank the programs in order of redemption</div>
         <div class="pri-list" id="priList"></div>
       </div>
       <div class="cbx-head" style="margin-top:16px">Returns (reversal)</div>
-      <div class="note tips" style="background:var(--n1);color:var(--sec)"><span><span class="pfx">Full reversal:&nbsp;</span>each chunk of points returns to the program it came from — fixed, nothing to set up.</span></div>
-      <div class="cbx-head" style="margin-top:6px">Partial reversal — credit order <span style="font-weight:400;color:var(--tert)">— rank which program is credited back first</span></div>
+      <div class="note warn"><span class="ic">ⓘ</span><span><span class="pfx">Note:&nbsp;</span>Applies to every mode above. A <b>full reversal</b> returns each chunk of points to the program it came from. A <b>partial reversal</b> follows the credit order below.</span></div>
+      <div class="cbx-head" style="margin:6px 0 3px">Partial reversal — credit order</div><div class="head-sub">Rank which program is credited back first</div>
       <div class="pri-list" id="revList"></div>
       <div class="scope-foot" id="priFoot"></div>`;
     renderPriSeg();renderPriHint();renderPriList();renderRevList();renderPriFoot();updatePriRank();
@@ -523,12 +520,13 @@
     const e=priEditable();
     const opt=(m,lbl,by)=>`<div class="rad ${priMode===m?'on':''} ${e?'':'dis'}" role="radio" aria-checked="${priMode===m}" ${e?`onclick="setPriMode('${m}')"`:''}><span class="ctl"></span><div><div class="rl">${lbl}</div><div class="rb">${by}</div></div></div>`;
     document.getElementById('priSeg').innerHTML=
-      opt('exp','Expiry','Spend the soonest-expiring points first. Handled by the system (default).')+
-      opt('pri','Priority first','Spend points in the ranking order below first.')+
+      opt('exp','Expiry','Spend the earliest-expiring points first. Handled by the system (default).')+
+      opt('pri','Priority first','Spend points based on the ranking order.')+
       opt('exppri','Expiry + priority','Expiry leads; the ranking below breaks same-day ties.');
   }
   function renderPriHint(){
     const h=document.getElementById('priHint');
+    if(!h) return;
     if(priMode==='exp') h.innerHTML=`<span><span class="pfx">How it works:&nbsp;</span>Soonest-to-expire points are spent first — decided automatically by the system. There's nothing to configure here.</span>`;
     else if(priMode==='pri') h.innerHTML=`<span><span class="pfx">How it works:&nbsp;</span>Points are spent in the ranking order below first — even if a lower-ranked program's points expire sooner. Expiry only decides within the same program.</span>`;
     else h.innerHTML=`<span><span class="pfx">How it works:&nbsp;</span>Soonest-to-expire points are spent first; the ranking below is used only to break ties when two batches expire on the same day.</span>`;
@@ -545,7 +543,7 @@
   function renderPriFoot(){const f=document.getElementById('priFoot');
     if(priEditable()){f.innerHTML=`<button class="btn btn-secondary" ${priDirty()?'':'disabled'} onclick="priReset()">Reset</button><button class="btn btn-primary" ${priDirty()?'':'disabled'} onclick="priSubmit()">Submit for approval</button>`;}
     else f.innerHTML='';}
-  function setPriMode(m){if(!priEditable())return;priMode=m;renderPriSeg();renderPriHint();updatePriRank();renderPriFoot();}
+  function setPriMode(m){if(!priEditable())return;priMode=m;renderPriSeg();renderPriHint();updatePriRank();renderRevList();renderPriFoot();}
   function renderRevList(){
     const e=priEditable();
     document.getElementById('revList').innerHTML=revOrder.map((p,i)=>{
