@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redemption Scope — Flow Prototype · Capillary Loyalty+</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#091E42;--sec:#5E6C84;--tert:#97A0AF;--border:#DFE2E7;--line:#EFEFF2;
+    --green:#47AF46;--green-d:#3C9A3B;--green-dis:#A1D8A0;--green1:#DBEFDA;--green9:#1B4C20;
+    --blue:#2466EA;--blue-bg:#EEF1FB;--n1:#FAFBFC;--n3:#EBECF0;--n5:#B3BAC5;--n9:#42526E;
+    --orange1:#FEF2E0;--orange7:#F87D23;--gold:#FFCC00;--pink:#E0249A;
+    --rad:4px;--font:"Roboto",Arial,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:#fff;color:var(--ink);line-height:1.45;-webkit-font-smoothing:antialiased}
+  .protohint{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--sec);padding:8px 18px;background:#F4F5FB;border-bottom:1px solid var(--border);flex-wrap:wrap}
+  .protochip{background:var(--ink);color:#fff;font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;letter-spacing:.4px}
+  .steps{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--tert)}
+  .steps b{color:var(--ink);font-weight:500} .steps .on{color:var(--green9);font-weight:500}
+  .scenariobar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 18px;background:#fff;border-bottom:1px solid var(--border);font-size:13px}
+  .scenariobar label{font-weight:500;color:var(--ink)}
+  .scenariobar select{height:34px;border:1px solid var(--border);border-radius:var(--rad);padding:0 10px;font-family:var(--font);font-size:13px;color:var(--ink);background:#fff;min-width:330px}
+  .scn-out{color:var(--sec)} .scn-out b{color:var(--ink);font-weight:500}
+
+  .ghead{display:flex;align-items:center;gap:22px;background:#fff;border-bottom:1px solid var(--border);padding:0 22px;height:58px}
+  .ghead .logo{font-weight:500;font-size:16px;color:var(--ink);display:flex;align-items:center;gap:9px}
+  .ghead .org{font-size:14px;color:var(--ink);border:1px solid var(--border);border-radius:var(--rad);padding:7px 14px;display:flex;align-items:center;gap:9px;margin-left:6px}
+  .ghead .org .av{width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center}
+  .ghead nav{display:flex;gap:22px;margin-left:auto;height:100%}
+  .ghead nav a{font-size:14px;color:var(--sec);text-decoration:none;display:flex;align-items:center;border-bottom:2px solid transparent;height:100%}
+  .ghead nav a.active{color:var(--ink);font-weight:500;border-bottom-color:var(--ink)}
+  .ghead .right{display:flex;gap:16px;align-items:center;color:var(--sec);font-size:16px;margin-left:18px}
+  .ghead .right .av2{width:30px;height:30px;border-radius:50%;background:#F0E6DE;display:flex;align-items:center;justify-content:center;color:var(--sec)}
+
+  .thead{background:#fff;border-bottom:1px solid var(--line);padding:18px 40px 16px;display:flex;align-items:flex-start;justify-content:space-between}
+  .thead .arr{font-size:22px;color:var(--ink);cursor:pointer;margin-right:16px;margin-top:4px}
+  .thead h1{font-size:24px;font-weight:500}
+  .thead .desc{font-size:12px;color:var(--sec);margin-top:8px}
+  .thead .acts{display:flex;align-items:center;gap:22px}
+
+  .btn{font-family:var(--font);font-size:14px;font-weight:500;height:40px;padding:0 24px;border-radius:var(--rad);border:none;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:background .15s}
+  .btn-primary{background:var(--green);color:#fff}.btn-primary:hover{background:var(--green-d)}
+  .btn-primary:disabled{background:var(--green-dis);cursor:not-allowed}
+  .btn-secondary{background:var(--n3);color:var(--ink)}.btn-secondary:hover{background:var(--border)}
+  .btn-sm{height:32px;padding:0 16px}
+  .link{background:none;border:none;font-family:var(--font);font-size:14px;font-weight:500;color:var(--blue);cursor:pointer;padding:0}
+  .link:hover{text-decoration:underline}
+
+  .pbody{padding:0 40px 60px}
+  .sec-row{border-bottom:1px solid var(--line);padding:20px 0;display:flex;align-items:flex-start;gap:16px}
+  .sec-num{width:30px;height:30px;border-radius:50%;background:var(--n3);color:var(--ink);font-size:14px;font-weight:500;display:flex;align-items:center;justify-content:center;flex:none}
+  .sec-row h3{font-size:16px;font-weight:500} .sec-row p{font-size:13px;color:var(--sec);margin-top:3px}
+  .promo-banner{display:flex;align-items:center;gap:16px;border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin:20px 0}
+  .promo-banner .pico{width:42px;height:42px;border-radius:50%;background:#EDEFF3;display:flex;align-items:center;justify-content:center;color:var(--sec);font-size:18px;flex:none}
+  .promo-banner .txt{font-size:14px} .promo-banner .lnk{margin-left:auto;color:var(--blue);font-weight:500;font-size:14px}
+
+  .wf-actrow{display:flex;align-items:center;justify-content:flex-end;gap:16px;margin:6px 0 16px}
+  .wf-actrow .lbl{font-size:16px;color:var(--ink);font-weight:500}
+  .wf-act{width:740px;max-width:62%;border:1px solid var(--border);border-radius:var(--rad);height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-size:14px}
+  .wf-act .chev{color:var(--sec);font-size:18px}
+  .builder{display:grid;grid-template-columns:300px 300px minmax(0,1fr);border:1px solid var(--border);border-radius:8px;overflow:visible;min-height:440px;position:relative}
+  @media(max-width:900px){.builder{grid-template-columns:1fr}}
+  .bcol{padding:18px 16px;border-right:1px solid var(--line);display:flex;flex-direction:column}
+  .bcol:last-child{border-right:none}
+  .collapse{position:absolute;left:600px;top:28px;width:26px;height:26px;border-radius:50%;border:1px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;color:var(--sec);font-size:13px;transform:translateX(-50%);box-shadow:0 1px 3px rgba(9,30,66,.1);z-index:2}
+  .srch{width:100%;height:40px;border:1px solid #B3BAC5;border-radius:var(--rad);padding:0 12px;font-size:13px;color:var(--tert)}
+  .srch-note{font-size:11px;color:var(--tert);margin:6px 0 16px}
+  .ruleset{border:1px solid var(--border);border-radius:4px;overflow:hidden}
+  .rs-head{display:flex;align-items:center;justify-content:space-between;padding:11px 12px;font-size:14px;font-weight:500;color:var(--ink)}
+  .rs-head .ico{color:var(--blue)}
+  .rs-item{padding:11px 12px;font-size:13px;color:var(--blue);background:#D4E1FC;font-weight:500;display:flex;align-items:center;justify-content:space-between}
+  .scope-lbl{font-size:16px;font-weight:500;color:var(--ink)}
+  .scope-sub{font-size:13px;color:var(--sec);margin:4px 0 18px}
+  .cond-card{background:#EAF1FE;border-radius:4px;padding:14px}
+  .cond-card.un{background:#fff;border:1px solid var(--border)}
+  .cond-card.un .ct{color:var(--ink)}
+  .cond-card+.cond-card{margin-top:10px}
+  .cond-card{cursor:pointer}
+  .cond-card .ctop{display:flex;align-items:center;justify-content:space-between}
+  .cond-card .ct{font-size:16px;font-weight:500;color:var(--blue)}
+  .cond-card .cx{color:var(--ink);cursor:pointer;font-weight:500}
+  .cond-card .cs{font-size:13px;color:var(--sec);margin-top:4px}
+  .btn-out{border:1px solid var(--blue);background:#fff;border-radius:var(--rad);height:40px;padding:0 18px;font-size:14px;font-weight:500;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+  .col-foot{margin-top:auto;padding-top:24px}
+  .exp-lbl{font-size:16px;font-weight:500;color:var(--ink);margin-bottom:8px}
+  .expr{border:1px solid #B3BAC5;border-radius:4px;min-height:130px;padding:14px 16px;font-size:14px;color:var(--ink);position:relative}
+  .expr .tok{color:#FFCC00} .expr .ai{position:absolute;right:14px;bottom:12px;color:#6C5CE7;font-size:16px}
+  .when-bar{display:flex;align-items:center;justify-content:space-between;background:#EDEFF2;border-radius:4px;padding:12px 16px;font-size:14px;color:var(--ink);margin:16px 0 14px}
+  .when-bar .x{font-weight:700;cursor:pointer}
+  .when-row{display:flex;align-items:center;gap:14px;font-size:14px;color:var(--ink);margin-bottom:16px}
+  .seg{display:inline-flex;gap:8px}
+  .seg b,.seg s{padding:7px 20px;font-size:13px;font-weight:500;border-radius:16px;cursor:pointer;text-decoration:none;border:1px solid #DCDEE2}
+  .seg .on{background:#DCDEE2;color:var(--ink)} .seg .off{background:#fff;color:var(--sec)}
+  .action-chip{display:flex;align-items:stretch;border:1px solid var(--ink);border-radius:4px;background:#fff}
+  .action-chip.dis{opacity:.5}
+  .action-chip .tro{display:flex;align-items:center;padding:0 14px;font-size:18px}
+  .action-chip .nm{display:flex;align-items:center;font-size:14px;font-weight:500;color:var(--ink);padding:14px 16px 14px 0}
+  .action-chip .st{display:flex;align-items:center;font-size:14px;color:var(--ink);border-left:1px solid var(--line);padding:14px 16px;flex:1}
+  .action-chip .dots{display:flex;align-items:center;color:var(--sec);font-size:18px;letter-spacing:1px;padding:0 14px;cursor:pointer}
+  .dis-note{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--orange7);margin:-2px 0 14px}
+  .addact{color:var(--blue);font-weight:500;font-size:14px;margin-top:18px;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+  .pos{position:relative}
+  .menu{position:absolute;background:#fff;border:1px solid var(--border);border-radius:4px;box-shadow:0 6px 20px rgba(9,30,66,.16);z-index:6;min-width:200px;padding:4px}
+  .menu div{padding:9px 12px;font-size:13px;color:var(--ink);border-radius:3px;cursor:pointer} .menu div:hover{background:var(--n1)} .menu div.del{color:#C91E27}
+  .empty-act{font-size:13px;color:var(--tert);padding:6px 0}
+  .expr-text{outline:none}
+
+  .note{display:flex;align-items:flex-start;gap:8px;padding:10px 14px;border-radius:var(--rad);font-size:13px;line-height:1.5;color:var(--ink)}
+  .note.tips{background:#D4E1FC} .note.pending{background:var(--orange1)} .note.warn{background:#FFF4D6}
+  .note .ic{flex:none;font-size:15px;margin-top:1px} .note .pfx{font-weight:500}
+  .note .cta{background:none;border:none;color:var(--blue);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;padding:0;white-space:nowrap} .note .cta:hover{text-decoration:underline}
+
+  .overlay{position:fixed;inset:0;z-index:100;display:none;background:rgba(244,245,247,.8)} .overlay.open{display:block}
+  .panel{position:absolute;top:0;right:0;width:min(1180px,94vw);min-width:0;max-width:1180px;height:100vh;background:#fff;display:flex;flex-direction:column;box-shadow:0 0 1px rgba(9,30,66,.31),-8px 0 24px -4px rgba(9,30,66,.25);animation:sl .22s ease}
+  .panel-head{padding:24px 40px 16px;position:relative}
+  .panel-head h2{font-size:24px;font-weight:500;color:var(--ink)}
+  .panel-head .org{font-size:13px;color:var(--sec);margin-top:6px} .panel-head .org b{color:var(--ink);font-weight:400;margin-left:4px}
+  .xbtn{position:absolute;top:22px;right:36px;width:32px;height:32px;border-radius:var(--rad);border:none;background:transparent;color:var(--ink);font-size:22px;cursor:pointer} .xbtn:hover{background:var(--n1)}
+  .panel-body{display:flex;flex:1;overflow:hidden}
+  .nav{width:236px;flex:none;padding:14px 16px 14px 28px;overflow-y:auto}
+  .nav-item{display:flex;align-items:center;gap:8px;padding:11px 14px;border-radius:var(--rad);font-size:14px;color:var(--sec);font-weight:500;cursor:pointer;margin-bottom:2px}
+  .nav-item:hover{background:var(--n1);color:var(--ink)}
+  .nav-item.active{background:var(--blue-bg);color:var(--blue);box-shadow:inset 3px 0 0 var(--blue)}
+  .nav-item .dot{width:7px;height:7px;border-radius:50%;background:var(--pink);flex:none}
+  .content{flex:1;padding:8px 48px 24px;min-width:0;overflow-y:auto;display:flex;flex-direction:column}
+  .empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--sec);padding:40px}
+  .empty .big{font-size:40px;margin-bottom:10px} .empty h3{font-size:18px;font-weight:500;color:var(--ink);margin-bottom:6px} .empty p{font-size:14px;max-width:380px} .empty .arrow{margin-top:14px;font-size:13px;color:var(--blue);font-weight:500}
+
+  .sec-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}
+  .sec-head h2{font-size:16px;font-weight:500;color:var(--ink)}
+  .sec-head .prog2{font-size:13px;color:var(--ink);margin-top:4px} .sec-head .prog2 b{font-weight:500}
+  .sec-head p{font-size:13px;color:var(--sec);margin-top:6px;max-width:none}
+  .head-actions{display:flex;align-items:center;gap:18px;flex:none}
+
+  .cbx-head{font-size:14px;font-weight:500;color:var(--ink);margin:2px 0 10px;display:flex;align-items:center}
+  .cap-tip{position:relative;display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;margin-left:6px;color:var(--tert);cursor:help;font-size:13px;font-weight:400} .cap-tip:hover,.cap-tip:focus{color:var(--sec);outline:none}
+  .cap-tip-bub{position:absolute;top:calc(100% + 8px);left:0;width:max-content;max-width:300px;background:#091E42;color:#fff;font-size:12px;line-height:16px;font-weight:400;padding:4px 8px;border-radius:4px;box-shadow:0 0 1px rgba(9,30,66,.31),0 4px 8px -2px rgba(9,30,66,.25);opacity:0;visibility:hidden;transform:translateY(4px);transition:opacity .12s ease,transform .12s ease;z-index:40;text-align:left;white-space:normal;pointer-events:none}
+  .cap-tip:hover .cap-tip-bub,.cap-tip:focus .cap-tip-bub{opacity:1;visibility:visible;transform:translateY(0)}
+  .cbx-list{border:1px solid var(--border);border-radius:var(--rad);overflow-y:auto;width:100%;max-height:58vh}
+  .cbx-row{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line)}
+  .cbx-row:last-child{border-bottom:none} .cbx-row.edit:hover{background:var(--n1)}
+  .cbx{width:18px;height:18px;border:1.5px solid var(--n5);border-radius:3px;flex:none;display:flex;align-items:center;justify-content:center;background:#fff;color:#fff;font-size:12px;font-weight:700}
+  .cbx.on{background:var(--green);border-color:var(--green)} .cbx.edit{cursor:pointer}
+  .cbx.dis{background:var(--n3);border-color:var(--border);color:var(--n5);cursor:not-allowed}
+  .cbx.on.dis{background:var(--green-dis);border-color:var(--green-dis);color:#fff}
+  .cbx-row.dis .cbx-lbl{color:var(--sec)} .cbx-row.dis .cbx-sub{color:var(--tert)}
+  .cbx-lbl{font-size:14px;font-weight:500;color:var(--ink)} .cbx-sub{font-size:12px;color:var(--sec);margin-top:2px}
+  .cbx-state{margin-left:auto;font-size:12px;font-weight:500} .cbx-state.grp{color:var(--green9)} .cbx-state.ind{color:var(--n9)} .cbx-state.muted{color:var(--tert)}
+  .cbx-row.cat-parent{cursor:pointer} .cbx-row.cat-parent:hover{background:var(--n1)}
+  .cbx .caret,.caret{width:24px;flex:none;color:var(--ink);font-size:17px;font-weight:700;text-align:center;line-height:1}
+  .cbx-row.sub{padding-left:34px;background:#FCFCFD} .cbx-row.sub .cbx-lbl{font-weight:400}
+  .cbx.part{background:var(--green);border-color:var(--green)}
+  .promo-search{display:flex;align-items:center;gap:8px;padding:10px 16px 10px 34px;background:#FCFCFD;border-bottom:1px solid var(--line)}
+  .promo-search input{flex:1;border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-size:13px;outline:none}
+  .promo-search input:focus{border-color:var(--green)}
+  .promo-empty{padding:26px 16px;background:#FCFCFD;text-align:center;border-bottom:1px solid var(--line)}
+  .promo-empty .pe-ic{font-size:26px;opacity:.6;margin-bottom:6px}
+  .promo-empty .pe-t{font-size:14px;font-weight:500;color:var(--ink)}
+  .promo-empty .pe-s{font-size:12px;color:var(--sec);margin-top:4px;max-width:340px;margin-left:auto;margin-right:auto}
+  .promo-empty .pe-clear{margin-top:12px;background:none;border:1px solid var(--border);border-radius:6px;padding:6px 14px;font-family:var(--font);font-size:13px;color:var(--ink);cursor:pointer} .promo-empty .pe-clear:hover{background:var(--n1)}
+  .scope-foot{position:sticky;bottom:0;margin-top:22px;padding:16px 0;display:flex;gap:12px;background:#fff;border-top:1px solid var(--line)}
+
+  .dr-back{position:fixed;inset:0;background:rgba(9,30,66,.55);z-index:150}
+  .drawer{position:fixed;top:0;right:0;width:360px;max-width:92vw;height:100vh;background:#fff;z-index:151;display:flex;flex-direction:column;box-shadow:-8px 0 30px rgba(9,30,66,.18);animation:sl .2s ease}
+  @keyframes sl{from{transform:translateX(100%)}to{transform:none}}
+  .editpanel{position:fixed;top:0;right:0;width:75%;min-width:560px;height:100vh;background:#fff;z-index:151;display:flex;flex-direction:column;box-shadow:-8px 0 30px rgba(9,30,66,.18);animation:sl .2s ease}
+  .ep-head{display:flex;align-items:center;justify-content:space-between;padding:24px 40px} .ep-head h3{font-size:24px;font-weight:500;color:var(--ink)}
+  .ep-body{flex:1;overflow-y:auto;padding:14px 40px}
+  .ep-row{display:flex;align-items:center;gap:24px;padding:8px 0} .ep-row .l{width:260px;flex:none;font-size:14px;font-weight:500;color:var(--ink)} .ep-row .fld-sel{width:330px}
+  .ep-foot{padding:20px 40px}
+  .dr-head{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid var(--line)} .dr-head h3{font-size:20px;font-weight:500}
+  .dr-body{flex:1;overflow-y:auto;padding:18px 22px} .dr-foot{padding:16px 22px;border-top:1px solid var(--line)}
+  .act-card{display:flex;align-items:center;gap:14px;border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:10px;cursor:pointer;font-size:14px;font-weight:500;color:var(--ink)}
+  .act-card:hover{background:var(--n1)} .act-card.sel{border:2px solid var(--blue);background:var(--blue-bg)}
+  .act-card .ai2{font-size:18px;width:24px;text-align:center} .act-card .chk{margin-left:auto;color:var(--blue);font-weight:700}
+  .act-card.dis{cursor:not-allowed} .act-card.dis:hover{background:#fff} .act-card .dim{display:flex;align-items:center;gap:14px} .act-card.dis .dim{opacity:.5}
+  .tip-host{position:relative}
+  .tip{position:absolute;left:0;bottom:calc(100% + 4px);background:var(--ink);color:#fff;font-size:12px;line-height:1.45;font-weight:400;padding:8px 11px;border-radius:6px;width:250px;box-shadow:0 6px 18px rgba(9,30,66,.28);opacity:0;visibility:hidden;transition:opacity .15s;z-index:30;pointer-events:none}
+  .tip-host:hover .tip{opacity:1;visibility:visible}
+  .fld-sel{width:100%;height:40px;border:1px solid #B3BAC5;border-radius:4px;padding:0 12px;font-size:14px;font-family:var(--font);color:var(--ink);background:#fff}
+
+  .toast-wrap{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;align-items:center}
+  .toast{display:flex;align-items:center;gap:10px;background:var(--ink);color:#fff;font-size:14px;padding:12px 16px;border-radius:var(--rad);box-shadow:0 8px 24px rgba(9,30,66,.28);opacity:0;transform:translateY(-10px);transition:.25s}
+  .toast.show{opacity:1;transform:none}
+  .toast .tk{width:18px;height:18px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex:none}
+
+  /* Capillary radio group (mode selector) */
+  .radg{max-width:600px;margin:2px 0 10px}
+  .rad{display:flex;align-items:flex-start;gap:8px;padding:6px 0;cursor:pointer}
+  .rad .ctl{width:16px;height:16px;border-radius:50%;border:1px solid var(--n5);flex:none;margin-top:2px;display:flex;align-items:center;justify-content:center;background:#fff}
+  .rad.on .ctl{border:1px solid var(--green)}
+  .rad.on .ctl::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--green)}
+  .rad.dis{cursor:not-allowed} .rad.dis .ctl{background:var(--n1)} .rad.dis.on .ctl{border-color:var(--green-dis)} .rad.dis.on .ctl::after{background:var(--green-dis)}
+  .rad .rl{font-size:14px;font-weight:500;color:var(--ink)} .rad .rb{font-size:12px;color:var(--sec);margin-top:2px}
+  /* drag-to-rank list */
+  .pri-list{border:1px solid var(--border);border-radius:var(--rad);overflow:hidden;max-width:600px;margin-top:4px}
+  .pri-row{display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--line);background:#fff}
+  .pri-row:last-child{border-bottom:none} .pri-row.dis{opacity:.6}
+  .pri-row.draggable{cursor:grab} .pri-row.dragover{background:var(--green1)} .pri-row.dragging{opacity:.4}
+  .pri-grip{color:var(--tert);font-size:16px} .pri-row.draggable .pri-grip{cursor:grab}
+  .pri-num{width:20px;height:20px;border-radius:50%;background:var(--n3);font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;color:var(--sec);flex:none}
+  .pri-nm{flex:1;font-size:14px;font-weight:500;color:var(--ink)} .pri-nm small{display:block;font-weight:400;font-size:12px;color:var(--sec)}
+  .pri-hint{margin-left:auto;font-size:12px;color:var(--tert)}
+</style>
+</head>
+<body>
+  <div class="protohint">
+    <span class="protochip">PROTOTYPE</span>
+    <span class="steps"><b>Flow:</b> <span id="s1" class="on">1 · Program workflow</span> › <span id="s2">2 · Advanced settings</span> › <span id="s3">3 · Redemption scope</span></span>
+    <span style="margin-left:auto">Styled from the live Capillary prod UI</span>
+  </div>
+  <div class="scenariobar">
+    <label>Demo scenario</label>
+    <select id="scenarioSel" onchange="setScenario(this.value)">
+      <option value="0">Scenario 1 — Org active · "Redeem group points" added → editable</option>
+      <option value="1">Scenario 2 — Org active · no group action added → system assumes Individual</option>
+      <option value="2">Scenario 3 — Org inactive → action disabled · Individual</option>
+    </select>
+    <span id="scenarioOut" class="scn-out"></span>
+  </div>
+
+  <!-- PROGRAM SCREEN -->
+  <div id="programScreen">
+    <div class="ghead">
+      <div class="logo">▦ Loyalty+</div>
+      <div class="org"><span class="av">T</span> Tata Digital SIT ▾</div>
+      <nav><a class="active">Programs</a><a>Promotions</a><a>Creatives</a></nav>
+      <div class="right"><span title="Settings">⚙</span><span>✦</span><span class="av2">◍</span></div>
+    </div>
+    <div class="thead">
+      <div style="display:flex;align-items:flex-start">
+        <span class="arr" title="Back">←</span>
+        <div><h1>Tata NeuPass</h1><div class="desc">Description : Tata NeuPass</div></div>
+      </div>
+      <div class="acts">
+        <button class="link" onclick="openSettings('empty')">Advanced settings</button>
+        <button class="btn btn-primary" disabled>Publish changes</button>
+      </div>
+    </div>
+    <div class="pbody">
+      <div class="sec-row"><div class="sec-num">1</div><div><h3>Strategies</h3><p>Define the basic building blocks of your program in this section</p></div></div>
+      <div class="sec-row"><div class="sec-num">2</div><div><h3>Trackers</h3><p>Create Custom Metrics to track program milestones and eligibilities</p></div></div>
+      <div class="sec-row" style="border-bottom:none"><div class="sec-num">3</div><div><h3>Workflows</h3><p>Connect strategies and trackers together and define the real-time flows of the program</p></div></div>
+      <div class="promo-banner"><div class="pico">📡</div><div class="txt">Promotions have now been migrated to its own section with a new and improved interface!</div><div class="lnk">⤤ Open Loyalty promotions</div></div>
+      <div class="wf-actrow"><span class="lbl">Customer Activity</span><div class="wf-act"><span>PointsRedemption</span><span class="chev">›</span></div></div>
+      <div class="builder" id="builderHost"></div>
+      <div class="note tips" id="wfNote" style="margin-top:18px"></div>
+    </div>
+  </div>
+
+  <!-- ADVANCED SETTINGS OVERLAY -->
+  <div class="overlay" id="setOverlay" onclick="if(event.target===this)closeSettings()">
+    <div class="panel">
+      <div class="panel-head">
+        <h2 id="panelTitle">Advanced settings</h2>
+        <div class="org">Organisation <b>Tata Digital SIT</b></div>
+        <button class="xbtn" title="Close" onclick="closeSettings()">&times;</button>
+      </div>
+      <div class="panel-body">
+        <nav class="nav">
+          <div class="nav-item" onclick="selectSection('generic','Tiers')">Tiers</div>
+          <div class="nav-item" onclick="selectSection('generic','Points')">Points</div>
+          <div class="nav-item" onclick="selectSection('generic','Payment methods')">Payment methods</div>
+          <div class="nav-item" onclick="selectSection('generic','Communication Channels')">Communication Channels</div>
+          <div class="nav-item" onclick="selectSection('generic','Liability settings')">Liability settings</div>
+          <div class="nav-item" onclick="selectSection('generic','Subscription Program')">Subscription Program</div>
+          <div class="nav-item" onclick="selectSection('generic','Delayed accrual')">Delayed accrual</div>
+          <div class="nav-item" onclick="selectSection('generic','Reward currencies')">Reward currencies</div>
+          <div class="nav-item" onclick="selectSection('generic','Points allocation limits')">Points allocation limits</div>
+          <div class="nav-item" onclick="selectSection('generic','Loyalty promotions')">Loyalty promotions</div>
+          <div class="nav-item" id="navRedemption" onclick="selectSection('redemption')">Redemption scope <span class="dot"></span></div>
+          <div class="nav-item" id="navPriority" onclick="selectSection('priority')">Redemption priority <span class="dot"></span></div>
+        </nav>
+        <div class="content" id="advContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="drawerHost"></div>
+  <div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+  const STRATS=['GroupRedemption','CFT_redemption','Points_transfer_redemption_tataneu','redemption_config','RedemptionThreshold','test_usergroupprimary','test_usergroupsecondary'];
+  let mode='view', status='Live';
+  // Redemption scope — by point-source category. group:true = Shared (can travel).
+  let CATS=[
+    {label:"Base / everyday points",sub:"Regular transaction points",group:true},
+    {label:"Promotional points",sub:"From loyalty promotions",expandable:true,open:false,unit:"promotion",query:"",promos:[
+      {label:"IHCL Stay Promotion",sub:"Bill promo",group:false},
+      {label:"Weekend Spend Bonus",sub:"Bill promo",group:true},
+      {label:"Birthday Bonus",sub:"Customer promo",group:false},
+      {label:"Festive Double Points",sub:"Bill promo",group:false},
+      {label:"Tata Neu Card Accelerator",sub:"Line promo",group:true},
+      {label:"First Stay Welcome Bonus",sub:"Customer promo",group:false},
+      {label:"Spa & Dining Bonus",sub:"Line promo",group:false},
+      {label:"Anniversary Reward",sub:"Customer promo",group:false},
+      {label:"Monsoon Getaway Offer",sub:"Bill promo",group:true},
+      {label:"Referral Bonus",sub:"Customer promo",group:false}
+    ]},
+    {label:"Goodwill points",sub:"Member Care adjustments",group:false},
+    {label:"Imported points",sub:"Data import",group:true},
+    {label:"Campaign points",sub:"Engage+ campaigns",expandable:true,open:false,unit:"campaign",query:"",promos:[
+      {label:"Diwali Cashback",sub:"Engage+ campaign",group:true},
+      {label:"App Install Bonus",sub:"Engage+ campaign",group:false},
+      {label:"Refer-a-Friend",sub:"Engage+ campaign",group:false},
+      {label:"Weekend Flash Bonus",sub:"Engage+ campaign",group:true},
+      {label:"Newsletter Signup",sub:"Engage+ campaign",group:false}
+    ]},
+    {label:"Benefits",sub:"Tier & membership benefits",expandable:true,open:false,unit:"benefit",query:"",promos:[
+      {label:"Room Upgrade",sub:"Tier benefit",group:false},
+      {label:"Late Checkout",sub:"Tier benefit",group:false},
+      {label:"Welcome Drink",sub:"Tier benefit",group:true},
+      {label:"Airport Transfer",sub:"Membership benefit",group:false},
+      {label:"Complimentary Breakfast",sub:"Tier benefit",group:true},
+      {label:"Spa Discount",sub:"Membership benefit",group:false},
+      {label:"Priority Check-in",sub:"Tier benefit",group:false}
+    ]}
+  ];
+  const cloneCats=()=>JSON.parse(JSON.stringify(CATS));
+  let savedCATS=cloneCats();
+
+  /* ---- scenarios ---- */
+  const SCENARIOS=[{org:true,added:true,branch:'True'},{org:true,added:false,branch:null},{org:false,added:false,branch:null}];
+  let SCi=0;
+  function gAllowed(){const s=SCENARIOS[SCi];return s.org&&s.added&&s.branch==='True';}
+  function gReason(){const s=SCENARIOS[SCi];
+    if(!s.org) return `Group redemption is inactive in Organisation settings — the "Redeem group points" action is disabled in the workflow, so points redeem individually.`;
+    return `No "Redeem group points" action is configured in this program's workflow, so the system assumes Individual redemption for every points type.`;}
+  function setScenario(i){SCi=+i;if(!gAllowed())mode='view';applyScenario();renderScn();renderBuilder();const ov=document.getElementById('setOverlay');if(ov&&ov.classList.contains('open')){if(document.getElementById('navRedemption').classList.contains('active'))renderRedemption();if(document.getElementById('navPriority').classList.contains('active'))renderPriority();}}
+  function renderScn(){
+    const s=SCENARIOS[SCi];
+    document.getElementById('scenarioOut').innerHTML=gAllowed()?'→ <b>checkboxes editable</b> in Redemption scope':'→ <b>locked to Individual</b>';
+    const wf=document.getElementById('wfNote');if(!wf)return;
+    if(!s.org){wf.className='note warn';wf.innerHTML=`<span class="ic">ⓘ</span><span><span class="pfx">Note:&nbsp;</span>Group redemption is inactive in Organisation settings, so the "Redeem group points" action is disabled in this workflow. Enable group redemption in Organisation settings to use it.</span>`;}
+    else if(!s.added){wf.className='note warn';wf.innerHTML=`<span class="ic">ⓘ</span><span><span class="pfx">Assumption:&nbsp;</span>No "Redeem group points" action is configured here, so the <b>system assumes Individual</b> redemption for every points type. Add the action on the True branch to configure per-type scope.</span>`;}
+    else{wf.className='note tips';wf.innerHTML=`<span class="ic">💡</span><span><span class="pfx">Tips:&nbsp;</span>The per-points-type control lives under this program's <b>Advanced settings › Redemption scope</b>. &nbsp;<button class="cta" onclick="openSettings('redemption')">Open Redemption scope ›</button></span>`;}
+  }
+
+  /* ---- builder ---- */
+  let B={sel:0,openMenu:null,conditions:[]};
+  function applyScenario(){
+    if(SCi===0) B.conditions=[{name:'Condition 1',whens:[{branch:'True',actions:[{name:'Redeem group points',strategy:'GroupRedemption'}]}]}];
+    else if(SCi===1) B.conditions=[{name:'Condition 1',whens:[{branch:'True',actions:[{name:'Redeem points',strategy:'redemption_config'}]}]}];
+    else B.conditions=[{name:'Condition 1',whens:[{branch:'True',actions:[]}]}];
+    B.sel=0;B.openMenu=null;
+  }
+  function actionCount(cd){return cd.whens.reduce((n,w)=>n+w.actions.length,0);}
+  function renderBuilder(){
+    const host=document.getElementById('builderHost');if(!host)return;
+    const c=B.conditions[B.sel];
+    const left=`<div class="bcol"><input class="srch" placeholder="🔍  Search" disabled><div class="srch-note">Atleast 3 characters required</div><div class="ruleset"><div class="rs-head"><span><span class="ico">☰</span> Evaluation start <span style="color:var(--tert)">ⓘ</span></span><span style="color:var(--sec)">⌃</span></div><div class="rs-item">Set1 <span style="color:var(--sec)">⋮</span></div></div></div>`;
+    const cards=B.conditions.map((cd,i)=>`<div class="cond-card ${i===B.sel?'':'un'}" onclick="selectCond(${i})"><div class="ctop"><span class="ct">${cd.name}</span>${i===B.sel?`<span class="cx" onclick="event.stopPropagation();removeCondition(${i})">✕</span>`:''}</div><div class="cs">${actionCount(cd)} action(s) setup</div></div>`).join('');
+    const mid=`<div class="bcol"><div class="scope-lbl">Scope</div><div class="scope-sub">3 Scope(s) selected</div>${cards}<div class="col-foot"><button class="btn-out" onclick="addCondition()">＋ Condition</button></div></div>`;
+    const ico=n=>n.indexOf('Transfer')===0?'🔁':(n.indexOf('Redeem')===0?'🏆':'🎫');
+    const whens=c.whens.map((w,wi)=>{
+      const acts=w.actions.length?w.actions.map((a,ai)=>`<div class="action-chip pos ${a.disabled?'dis':''}" style="margin-bottom:${a.disabled?'4px':'10px'}"><span class="tro">${ico(a.name)}</span><span class="nm">${a.name}</span><span class="st">${a.strategy}</span>${a.disabled?'':`<span class="dots" onclick="toggleChipMenu(${wi},${ai})">⋯</span>`}${(!a.disabled&&B.openMenu==='c'+wi+'_'+ai)?`<div class="menu" style="right:6px;top:46px"><div onclick="event.stopPropagation();openEditDrawer(${wi},${ai})">Edit action</div><div class="del" onclick="event.stopPropagation();deleteAction(${wi},${ai})">Delete action</div></div>`:''}</div>${a.disabled?'<div class="dis-note">🔒 Disabled — group redemption is inactive in Organisation settings.</div>':''}`).join(''):`<div class="empty-act">No actions yet — add one below.</div>`;
+      const header=wi===0?'':`<div class="when-bar"><span>When</span><span class="x" onclick="removeWhen(${wi})">✕</span></div>`;
+      return `${header}<div class="when-row"><span>Expression is</span><span class="seg"><b class="${w.branch==='True'?'on':'off'}" onclick="setWhenBranch(${wi},'True')">True</b><s class="${w.branch==='False'?'on':'off'}" onclick="setWhenBranch(${wi},'False')">False</s></span></div>${acts}<div style="margin:12px 0 20px"><span class="addact" onclick="openAddDrawer(${wi})">＋ Add action</span></div>`;
+    }).join('');
+    const both=c.whens.length>=2;
+    const right=`<div class="bcol pos"><div class="exp-lbl">Expression</div><div class="expr"><span class="expr-text" contenteditable="true" spellcheck="false">currentEvent.<span class="tok">isGroupProgramRedemption</span></span><span class="ai">✦</span></div><div style="margin-top:14px">${whens}</div><div class="col-foot"><button class="btn-out" ${both?'disabled style="opacity:.45;cursor:not-allowed"':''} onclick="addWhen()">＋ When</button></div></div>`;
+    host.innerHTML=`<div class="collapse">‹</div>${left}${mid}${right}`;
+  }
+  function selectCond(i){B.sel=i;B.openMenu=null;renderBuilder();}
+  function addCondition(){B.conditions.push({name:'Condition '+(B.conditions.length+1),whens:[{branch:'True',actions:[]}]});B.sel=B.conditions.length-1;B.openMenu=null;renderBuilder();}
+  function removeCondition(i){if(B.conditions.length<=1){toast('At least one condition is required.');return;}B.conditions.splice(i,1);B.sel=0;B.openMenu=null;renderBuilder();}
+  function setWhenBranch(wi,b){const c=B.conditions[B.sel];if(c.whens.some((w,j)=>j!==wi&&w.branch===b)){toast('A “When” for '+b+' already exists.');return;}c.whens[wi].branch=b;B.openMenu=null;renderBuilder();}
+  function addWhen(){const c=B.conditions[B.sel];if(c.whens.length>=2){toast('Both True and False branches are already added.');return;}const next=c.whens.some(w=>w.branch==='True')?'False':'True';c.whens.push({branch:next,actions:[]});B.openMenu=null;renderBuilder();}
+  function removeWhen(wi){B.conditions[B.sel].whens.splice(wi,1);B.openMenu=null;renderBuilder();}
+  function toggleChipMenu(wi,ai){const k='c'+wi+'_'+ai;B.openMenu=B.openMenu===k?null:k;renderBuilder();}
+  function deleteAction(wi,ai){B.conditions[B.sel].whens[wi].actions.splice(ai,1);B.openMenu=null;renderBuilder();}
+
+  /* ---- action drawers ---- */
+  const REDEEM_ACTIONS=[{label:'Allocation points',ic:'🪙'},{label:'Change customer status & label',ic:'👤'},{label:'Enrol in loyalty promotion',ic:'🏷️'},{label:'Forward to set',ic:'⏩'},{label:'Issue badge',ic:'🎖️'},{label:'Issue catalog reward',ic:'🎫'},{label:'Issue coupon',ic:'🎟️'},{label:'Issue loyalty promotion',ic:'🏷️'},{label:'Redeem group points',ic:'🏆'},{label:'Renew tier',ic:'🔄'},{label:'Send mail',ic:'✉️'},{label:'Send messages',ic:'💬'},{label:'Send SMS',ic:'📩'},{label:'Tag customer',ic:'🏷️'},{label:'Upgrade to tier',ic:'⬆️'},{label:'Issue AC_Points',ic:'🪙'},{label:'Issue Neucoin',ic:'🪙'}];
+  let DR={open:false,mode:null,selected:null,wi:null,ai:null};
+  function openAddDrawer(wi){DR={open:true,mode:'add',selected:null,wi:wi,ai:null};B.openMenu=null;renderBuilder();renderDrawer();}
+  function openEditDrawer(wi,ai){DR={open:true,mode:'edit',selected:null,wi:wi,ai:ai};B.openMenu=null;renderBuilder();renderDrawer();}
+  function closeDrawer(){DR.open=false;renderDrawer();}
+  function selectActCard(i){DR.selected=i;renderDrawer();}
+  function saveDrawer(){const c=B.conditions[B.sel];if(DR.mode==='add'){if(DR.selected==null)return;const a=REDEEM_ACTIONS[DR.selected];c.whens[DR.wi].actions.push({name:a.label,strategy:'GroupRedemption'});toast(a.label+' added.');}else{const sel=document.getElementById('editStrat');if(sel)c.whens[DR.wi].actions[DR.ai].strategy=sel.value;toast('Action updated.');}DR.open=false;renderDrawer();renderBuilder();}
+  function renderDrawer(){
+    const host=document.getElementById('drawerHost');if(!host)return;if(!DR.open){host.innerHTML='';return;}
+    const X=`<button onclick="closeDrawer()" style="border:none;background:transparent;font-size:22px;cursor:pointer;color:var(--ink)">&times;</button>`;
+    if(DR.mode==='add'){
+      const cards=REDEEM_ACTIONS.map((a,i)=>{
+        if(!SCENARIOS[SCi].org && a.label==='Redeem group points') return `<div class="act-card dis tip-host"><span class="dim"><span class="ai2">${a.ic}</span><span>${a.label}</span></span><span class="tip">Group redemption is inactive in Organisation settings. Enable it to add this action.</span></div>`;
+        return `<div class="act-card ${DR.selected===i?'sel':''}" onclick="selectActCard(${i})"><span class="ai2">${a.ic}</span><span>${a.label}</span>${DR.selected===i?'<span class="chk">✓</span>':''}</div>`;
+      }).join('');
+      host.innerHTML=`<div class="dr-back" onclick="closeDrawer()"></div><div class="drawer"><div class="dr-head"><h3>Add action</h3>${X}</div><div class="dr-body">${cards}</div><div class="dr-foot"><button class="btn btn-primary" ${DR.selected!=null?'':'disabled'} onclick="saveDrawer()">Save</button></div></div>`;
+    }else{
+      const a=B.conditions[B.sel].whens[DR.wi].actions[DR.ai];
+      const opts=STRATS.map(s=>`<option ${s===a.strategy?'selected':''}>${s}</option>`).join('');
+      host.innerHTML=`<div class="dr-back" onclick="closeDrawer()"></div><div class="editpanel"><div class="ep-head"><h3>Edit action: ${a.name}</h3>${X}</div><div class="ep-body"><div class="ep-row"><span class="l">Points redemption strategy</span><select class="fld-sel" id="editStrat">${opts}</select></div></div><div class="ep-foot"><button class="btn btn-primary" onclick="saveDrawer()">Save</button></div></div>`;
+    }
+  }
+  document.addEventListener('click',e=>{if(B.openMenu&&!e.target.closest('.menu')&&!e.target.closest('.dots')&&!e.target.closest('.addact')){B.openMenu=null;renderBuilder();}});
+
+  /* ---- advanced settings ---- */
+  function setStep(n){document.getElementById('s2').className=n>=2?'on':'';document.getElementById('s3').className=n>=3?'on':'';}
+  function openSettings(target){document.getElementById('setOverlay').classList.add('open');document.body.style.overflow='hidden';setStep(2);selectSection('redemption');}
+  function closeSettings(){document.getElementById('setOverlay').classList.remove('open');document.body.style.overflow='';setStep(1);}
+  function clearNav(){document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));}
+  function renderEmpty(){document.getElementById('advContent').innerHTML=`<div class="empty"><div class="big">⚙️</div><h3>Choose a setting to configure</h3><p>Select a section from the left. <b>Redemption scope</b> is new — set group vs. individual redemption per points type.</p><div class="arrow">← Open “Redemption scope”</div></div>`;}
+  function selectSection(kind,label){
+    setStep(kind==='redemption'||kind==='priority'?3:2);clearNav();
+    if(kind==='redemption'){document.getElementById('navRedemption').classList.add('active');document.getElementById('panelTitle').textContent='Advanced settings: Redemption scope';renderRedemption();}
+    else if(kind==='priority'){document.getElementById('navPriority').classList.add('active');document.getElementById('panelTitle').textContent='Advanced settings: Redemption priority';renderPriority();}
+    else{[...document.querySelectorAll('.nav-item')].find(n=>n.textContent.trim().startsWith(label))?.classList.add('active');document.getElementById('panelTitle').textContent='Advanced settings: '+label;document.getElementById('advContent').innerHTML=`<div class="sec-head"><div><h2>${label}</h2><p>This section already exists in Loyalty+. It isn’t part of this prototype — the focus here is <b>Redemption scope</b>.</p></div></div><div class="note tips"><span class="ic">💡</span><span><span class="pfx">Tips:&nbsp;</span>Open <b>Redemption scope</b> from the left to see the new configuration.</span></div>`;}
+  }
+
+  /* ---- redemption scope (single program, checkbox) ---- */
+  function renderRedemption(){
+    document.getElementById('advContent').innerHTML=`
+      <div class="sec-head">
+        <div>
+          <h2>Define redemption scope by points category</h2>
+          <div class="prog2">Program: <b>Tata NeuPass</b></div>
+          <p>Choose which categories of points earned in this program can be redeemed across the group. Unchecked categories stay <b>Individual</b> — redeemable only within this program. Promotional points can be set per specific promotion.</p>
+        </div>
+        <div class="head-actions"></div>
+      </div>
+      <div class="note pending" id="pendingNote" style="display:none"><span class="ic">⏱</span><span><span class="pfx">Pending:&nbsp;</span>Changes submitted for approval. They go live once an approver signs off.</span></div>
+      <div class="cbx-head">Redeemable across the group — by points category${gAllowed()?'':infoTip(gReason()+' Every category stays Individual until this is resolved, so all options are unchecked and read-only.')}</div>
+      <div class="cbx-list" id="cbxList"></div>
+      <div class="scope-foot" id="scopeFoot"></div>`;
+    renderCats();renderFoot();
+    if(status!=='Live'){const pn=document.getElementById('pendingNote');if(pn)pn.style.display='flex';}
+  }
+  function editable(){return gAllowed()&&status==='Live';}
+  function dirty(){return JSON.stringify(CATS)!==JSON.stringify(savedCATS);}
+  function box(on,e,dis,onclick){return `<span class="cbx ${on?'on':''} ${e?'edit':''} ${dis?'dis':''}" ${e&&onclick?`onclick="${onclick}"`:''}>${on?'✓':''}</span>`;}
+  function stateTag(on,dis){return `<span class="cbx-state ${on?'grp':'ind'} ${dis?'muted':''}">${on?'Shared':'Individual'}</span>`;}
+  function infoTip(text){return `<span class="cap-tip" tabindex="0" aria-label="${text.replace(/"/g,'&quot;')}">ⓘ<span class="cap-tip-bub" role="tooltip">${text}</span></span>`;}
+  function renderCats(){
+    const e=editable(); let h='';
+    CATS.forEach((c,i)=>{
+      if(c.disabled){ // Benefits — shown, not selectable yet
+        h+=`<div class="cbx-row dis"><span class="cbx dis"></span><div><div class="cbx-lbl">${c.label}</div><div class="cbx-sub">${c.sub}</div></div><span class="cbx-state muted">Not configurable yet</span></div>`;
+        return;
+      }
+      if(c.expandable){ // Promotional points / Benefits — drill to specific items
+        const unit=c.unit||'promotion';
+        if(!gAllowed()){ // locked — accordion not expandable, everything Individual
+          h+=`<div class="cbx-row dis"><span class="cbx dis"></span><div><div class="cbx-lbl">${c.label}</div><div class="cbx-sub">${c.sub}</div></div>${stateTag(false,true)}</div>`;
+          return;
+        }
+        const tot=c.promos.length, g=c.promos.filter(p=>p.group).length;
+        const summ=`${g} of ${tot} Shared`;
+        const allOn=gAllowed()&&g===tot, someOn=gAllowed()&&g>0, pdis=!gAllowed();
+        const pbox=`<span class="cbx ${allOn?'on':''} ${someOn&&!allOn?'part':''} ${e?'edit':''} ${pdis?'dis':''}" ${e&&!pdis?`onclick="event.stopPropagation();toggleAllPromos(${i})"`:''}>${allOn?'✓':(someOn?'–':'')}</span>`;
+        h+=`<div class="cbx-row cat-parent ${e?'edit':''}" onclick="toggleExpand(${i})"><span class="caret">${c.open?'▾':'▸'}</span>${pbox}<div><div class="cbx-lbl">${c.label}</div><div class="cbx-sub">${c.sub} · set all, or per ${unit}</div></div><span class="cbx-state muted">${gAllowed()?summ:'Individual'}</span></div>`;
+        if(c.open){
+          const cq=c.query||'';
+          h+=`<div class="promo-search"><span style="color:var(--sec);font-size:13px">🔍</span><input id="psearch-${i}" type="text" placeholder="Search ${unit}s…" value="${cq.replace(/"/g,'&quot;')}" oninput="filterPromos(${i},this.value)"></div>`;
+          const q=cq.trim().toLowerCase();
+          const matches=c.promos.map((pr,j)=>({pr,j})).filter(o=>!q||o.pr.label.toLowerCase().includes(q)||o.pr.sub.toLowerCase().includes(q));
+          if(matches.length===0){h+=`<div class="promo-empty"><div class="pe-ic">🔍</div><div class="pe-t">No ${unit}s match “${cq}”</div><div class="pe-s">Check the spelling or try a different name or type.</div><button class="pe-clear" onclick="filterPromos(${i},'')">Clear search</button></div>`;}
+          matches.forEach(({pr,j})=>{
+            const on=gAllowed()?pr.group:false, dis=!gAllowed();
+            h+=`<div class="cbx-row sub ${e?'edit':''} ${dis?'dis':''}">${box(on,e,dis,`togglePromo(${i},${j})`)}<div><div class="cbx-lbl">${pr.label}</div><div class="cbx-sub">${pr.sub}</div></div>${stateTag(on,dis)}</div>`;
+          });
+        }
+        return;
+      }
+      const on=gAllowed()?c.group:false, dis=!gAllowed();
+      h+=`<div class="cbx-row ${e?'edit':''} ${dis?'dis':''}">${box(on,e,dis,`toggleCat(${i})`)}<div><div class="cbx-lbl">${c.label}</div><div class="cbx-sub">${c.sub}</div></div>${stateTag(on,dis)}</div>`;
+    });
+    document.getElementById('cbxList').innerHTML=h;
+  }
+  function toggleExpand(i){CATS[i].open=!CATS[i].open;if(!CATS[i].open)CATS[i].query='';renderCats();}
+  function toggleCat(i){if(!editable())return;CATS[i].group=!CATS[i].group;renderCats();renderFoot();}
+  function togglePromo(i,j){if(!editable())return;CATS[i].promos[j].group=!CATS[i].promos[j].group;renderCats();renderFoot();}
+  function toggleAllPromos(i){if(!editable())return;const all=CATS[i].promos.every(p=>p.group);CATS[i].promos.forEach(p=>p.group=!all);renderCats();renderFoot();}
+  function filterPromos(i,v){CATS[i].query=v;renderCats();const inp=document.getElementById('psearch-'+i);if(inp){inp.focus();const n=inp.value.length;inp.setSelectionRange(n,n);}}
+  function renderFoot(){const f=document.getElementById('scopeFoot');
+    if(editable()){f.innerHTML=`<button class="btn btn-secondary" ${dirty()?'':'disabled'} onclick="resetScope()">Reset</button><button class="btn btn-primary" ${dirty()?'':'disabled'} onclick="submitForApproval()">Submit for approval</button>`;}
+    else f.innerHTML='';}
+  function resetScope(){CATS=JSON.parse(JSON.stringify(savedCATS));renderCats();renderFoot();}
+  function submitForApproval(){savedCATS=JSON.parse(JSON.stringify(CATS));status='Awaiting';renderRedemption();toast('Redemption scope submitted for approval.');}
+
+  /* ---- redemption priority (related CR) ---- */
+  const PROGRAMS=[{name:'Tata NeuPass',note:'Umbrella program'},{name:'Taj · IHCL',note:'Brand program'},{name:'Tata CLiQ',note:'Brand program'}];
+  let priMode='exp';                 // 'exp' = expiry only (backend), 'pri' = priority first, 'exppri' = expiry + priority
+  let priOrder=[0,1,2];              // indices into PROGRAMS, top = highest priority
+  let revOrder=[0,1,2];              // partial-reversal credit order, top = credited back first
+  let priSavedMode='exp', priSaved=[0,1,2], priRevSaved=[0,1,2], priStatus='Live';
+  function priEditable(){return gAllowed()&&priStatus==='Live';}
+  function priDirty(){return JSON.stringify([priMode,priOrder,revOrder])!==JSON.stringify([priSavedMode,priSaved,priRevSaved]);}
+  function renderPriority(){
+    document.getElementById('advContent').innerHTML=`
+      <div class="sec-head">
+        <div>
+          <h2>Set redemption priority</h2>
+          <div class="prog2">Across programs · <b>Tata Digital SIT</b></div>
+          <p>When a group redemption can draw from more than one program, this decides the order points are spent in.</p>
+        </div>
+        <div class="head-actions"></div>
+      </div>
+      ${gAllowed()
+        ?`<div class="note tips"><span class="ic">💡</span><span><span class="pfx">Tips:&nbsp;</span>Keep <b>Expiry</b> unless a brand needs a specific program spent first (e.g. employee/wage points) — use <b>Priority first</b>, or <b>Expiry + priority</b> to let expiry lead and ranking break ties.</span></div>`
+        :`<div class="note warn"><span class="ic">ⓘ</span><span><span class="pfx">Note:&nbsp;</span>${gReason()} Priority only applies to group redemption, so it's read-only until this is resolved.</span></div>`}
+      <div class="note pending" id="priPending" style="display:none"><span class="ic">⏱</span><span><span class="pfx">Pending:&nbsp;</span>Changes submitted for approval. They go live once an approver signs off.</span></div>
+      <div class="cbx-head">When points could come from more than one program, decide by</div>
+      <div class="radg" id="priSeg" role="radiogroup"></div>
+      <div class="note tips" id="priHint" style="background:var(--n1);color:var(--sec)"></div>
+      <div id="priRankWrap">
+        <div class="cbx-head" style="margin-top:6px">Priority order <span style="font-weight:400;color:var(--tert)">— rank the programs (top spends first)</span></div>
+        <div class="pri-list" id="priList"></div>
+      </div>
+      <div class="cbx-head" style="margin-top:16px">Returns (reversal)</div>
+      <div class="note tips" style="background:var(--n1);color:var(--sec)"><span><span class="pfx">Full reversal:&nbsp;</span>each chunk of points returns to the program it came from — fixed, nothing to set up.</span></div>
+      <div class="cbx-head" style="margin-top:6px">Partial reversal — credit order <span style="font-weight:400;color:var(--tert)">— rank which program is credited back first</span></div>
+      <div class="pri-list" id="revList"></div>
+      <div class="scope-foot" id="priFoot"></div>`;
+    renderPriSeg();renderPriHint();renderPriList();renderRevList();renderPriFoot();updatePriRank();
+    if(priStatus!=='Live'){const pn=document.getElementById('priPending');if(pn)pn.style.display='flex';}
+  }
+  function renderPriSeg(){
+    const e=priEditable();
+    const opt=(m,lbl,by)=>`<div class="rad ${priMode===m?'on':''} ${e?'':'dis'}" role="radio" aria-checked="${priMode===m}" ${e?`onclick="setPriMode('${m}')"`:''}><span class="ctl"></span><div><div class="rl">${lbl}</div><div class="rb">${by}</div></div></div>`;
+    document.getElementById('priSeg').innerHTML=
+      opt('exp','Expiry','Spend the soonest-expiring points first. Handled by the system (default).')+
+      opt('pri','Priority first','Spend points in the ranking order below first.')+
+      opt('exppri','Expiry + priority','Expiry leads; the ranking below breaks same-day ties.');
+  }
+  function renderPriHint(){
+    const h=document.getElementById('priHint');
+    if(priMode==='exp') h.innerHTML=`<span><span class="pfx">How it works:&nbsp;</span>Soonest-to-expire points are spent first — decided automatically by the system. There's nothing to configure here.</span>`;
+    else if(priMode==='pri') h.innerHTML=`<span><span class="pfx">How it works:&nbsp;</span>Points are spent in the ranking order below first — even if a lower-ranked program's points expire sooner. Expiry only decides within the same program.</span>`;
+    else h.innerHTML=`<span><span class="pfx">How it works:&nbsp;</span>Soonest-to-expire points are spent first; the ranking below is used only to break ties when two batches expire on the same day.</span>`;
+  }
+  function updatePriRank(){const w=document.getElementById('priRankWrap');if(w)w.style.display=(priMode==='exp')?'none':'';}
+  function renderPriList(){
+    const e=priEditable();
+    document.getElementById('priList').innerHTML=priOrder.map((p,i)=>{
+      const prog=PROGRAMS[p];
+      const dnd=e?`draggable="true" ondragstart="priDragStart(event,${i})" ondragover="priDragOver(event)" ondragleave="priDragLeave(event)" ondrop="priDrop(event,${i})" ondragend="priDragEnd()"`:'';
+      return `<div class="pri-row ${e?'draggable':'dis'}" ${dnd}><span class="pri-grip">⠿</span><span class="pri-num">${i+1}</span><div class="pri-nm">${prog.name}<small>${prog.note}</small></div>${e?'<span class="pri-hint">Drag to reorder</span>':''}</div>`;
+    }).join('');
+  }
+  function renderPriFoot(){const f=document.getElementById('priFoot');
+    if(priEditable()){f.innerHTML=`<button class="btn btn-secondary" ${priDirty()?'':'disabled'} onclick="priReset()">Reset</button><button class="btn btn-primary" ${priDirty()?'':'disabled'} onclick="priSubmit()">Submit for approval</button>`;}
+    else f.innerHTML='';}
+  function setPriMode(m){if(!priEditable())return;priMode=m;renderPriSeg();renderPriHint();updatePriRank();renderPriFoot();}
+  function renderRevList(){
+    const e=priEditable();
+    document.getElementById('revList').innerHTML=revOrder.map((p,i)=>{
+      const prog=PROGRAMS[p];
+      const dnd=e?`draggable="true" ondragstart="revDragStart(event,${i})" ondragover="revDragOver(event)" ondragleave="revDragLeave(event)" ondrop="revDrop(event,${i})" ondragend="revDragEnd()"`:'';
+      return `<div class="pri-row ${e?'draggable':'dis'}" ${dnd}><span class="pri-grip">⠿</span><span class="pri-num">${i+1}</span><div class="pri-nm">${prog.name}<small>${prog.note}</small></div>${e?'<span class="pri-hint">Drag to reorder</span>':''}</div>`;
+    }).join('');
+  }
+  let revDragFrom=null;
+  function revDragStart(e,i){if(!priEditable())return;revDragFrom=i;e.currentTarget.classList.add('dragging');if(e.dataTransfer){e.dataTransfer.effectAllowed='move';}}
+  function revDragOver(e){if(revDragFrom===null)return;e.preventDefault();document.querySelectorAll('#revList .pri-row').forEach(x=>x.classList.remove('dragover'));e.currentTarget.classList.add('dragover');}
+  function revDragLeave(e){e.currentTarget.classList.remove('dragover');}
+  function revDragEnd(){revDragFrom=null;document.querySelectorAll('#revList .pri-row').forEach(x=>{x.classList.remove('dragover');x.classList.remove('dragging');});}
+  function revDrop(e,i){e.preventDefault();if(revDragFrom===null||!priEditable())return;const f=revDragFrom;revDragEnd();if(f===i)return;const item=revOrder.splice(f,1)[0];revOrder.splice(i,0,item);renderRevList();renderPriFoot();}
+  let priDragFrom=null;
+  function priDragStart(e,i){if(!priEditable())return;priDragFrom=i;e.currentTarget.classList.add('dragging');if(e.dataTransfer){e.dataTransfer.effectAllowed='move';}}
+  function priDragOver(e){if(priDragFrom===null)return;e.preventDefault();document.querySelectorAll('.pri-row').forEach(x=>x.classList.remove('dragover'));e.currentTarget.classList.add('dragover');}
+  function priDragLeave(e){e.currentTarget.classList.remove('dragover');}
+  function priDragEnd(){priDragFrom=null;document.querySelectorAll('.pri-row').forEach(x=>{x.classList.remove('dragover');x.classList.remove('dragging');});}
+  function priDrop(e,i){e.preventDefault();if(priDragFrom===null||!priEditable())return;const f=priDragFrom;priDragEnd();if(f===i)return;const item=priOrder.splice(f,1)[0];priOrder.splice(i,0,item);renderPriList();renderPriFoot();}
+  function priReset(){priMode=priSavedMode;priOrder=priSaved.slice();revOrder=priRevSaved.slice();renderPriSeg();renderPriHint();renderPriList();renderRevList();updatePriRank();renderPriFoot();}
+  function priSubmit(){priSavedMode=priMode;priSaved=priOrder.slice();priRevSaved=revOrder.slice();priStatus='Awaiting';renderPriority();toast('Redemption priority submitted for approval.');}
+
+  function toast(msg){const w=document.getElementById('toastWrap');const t=document.createElement('div');t.className='toast';t.innerHTML=`<span class="tk">✓</span><span>${msg}</span>`;w.appendChild(t);requestAnimationFrame(()=>t.classList.add('show'));setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},3200);}
+
+  applyScenario();renderBuilder();renderScn();
+</script>
+</body>
+</html>
