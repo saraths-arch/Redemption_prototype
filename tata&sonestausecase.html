@@ -110,7 +110,7 @@
   .expr-text{outline:none}
 
   .note{display:flex;align-items:flex-start;gap:8px;padding:10px 14px;border-radius:var(--rad);font-size:13px;line-height:1.5;color:var(--ink)}
-  .note.tips{background:#D4E1FC} .note.pending{background:var(--orange1)} .note.warn{background:#FFF4D6}
+  .note.tips{background:#D4E1FC} .note.pending{background:var(--orange1)} .note.warn{background:#FFF4D6} .note.caution{background:#FBD3D8}
   .note .ic{flex:none;font-size:15px;margin-top:1px} .note .pfx{font-weight:500}
   .note .cta{background:none;border:none;color:var(--blue);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;padding:0;white-space:nowrap} .note .cta:hover{text-decoration:underline}
 
@@ -155,7 +155,7 @@
   .cbx-row.cat-parent{cursor:pointer} .cbx-row.cat-parent:hover{background:var(--n1)}
   .cbx .caret,.caret{width:24px;flex:none;color:var(--ink);font-size:17px;font-weight:700;text-align:center;line-height:1}
   .cbx-row.sub{padding-left:34px;background:#FCFCFD} .cbx-row.sub .cbx-lbl{font-weight:400}
-  .cbx.part{background:var(--green);border-color:var(--green)}
+  .cbx.part{background:var(--green);border-color:var(--green)} .cbx.part.dis{background:var(--green-dis);border-color:var(--green-dis);color:#fff}
   .promo-search{display:flex;align-items:center;gap:8px;padding:10px 16px 10px 34px;background:#FCFCFD;border-bottom:1px solid var(--line)}
   .promo-search input{flex:1;border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-size:13px;outline:none}
   .promo-search input:focus{border-color:var(--green)}
@@ -218,9 +218,8 @@
   <div class="scenariobar">
     <label>Demo scenario</label>
     <select id="scenarioSel" onchange="setScenario(this.value)">
-      <option value="0">Scenario 1 — Org active · "Redeem group points" added → editable</option>
-      <option value="1">Scenario 2 — Org active · no “Redeem group points” action added → system assumes Individual</option>
-      <option value="2">Scenario 3 — Org inactive → action disabled · Individual</option>
+      <option value="0">Scenario 1 — Group redemption active → all Shared by default · tick to keep Individual</option>
+      <option value="1">Scenario 2 — Group redemption inactive → locked · all Individual</option>
     </select>
     <span id="scenarioOut" class="scn-out"></span>
   </div>
@@ -277,7 +276,7 @@
   let mode='view', status='Live';
   // Redemption scope — by point-source category. group:true = Shared (can travel).
   let CATS=[
-    {label:"Base points",sub:"Regular transaction points",group:true},
+    {label:"Base points",sub:"Transactions, Linking API & Points Transfer",group:true},
     {label:"Promotional points",sub:"From loyalty promotions",expandable:true,open:false,unit:"promotion",query:"",promos:[
       {label:"IHCL Stay Promotion",sub:"Bill promo",group:false},
       {label:"Weekend Spend Bonus",sub:"Bill promo",group:true},
@@ -310,32 +309,29 @@
       {label:"Priority Check-in",sub:"Tier benefit",group:false}
     ]}
   ];
+  CATS.forEach(c=>{c.group=true; if(c.promos)c.promos.forEach(p=>p.group=true);});
   const cloneCats=()=>JSON.parse(JSON.stringify(CATS));
   let savedCATS=cloneCats();
 
   /* ---- scenarios ---- */
-  const SCENARIOS=[{org:true,added:true,branch:'True'},{org:true,added:false,branch:null},{org:false,added:false,branch:null}];
+  const SCENARIOS=[{org:true},{org:false}];
   let SCi=0;
-  function gAllowed(){const s=SCENARIOS[SCi];return s.org&&s.added&&s.branch==='True';}
-  function gReason(){const s=SCENARIOS[SCi];
-    if(!s.org) return `Redemption across programs is inactive in Organisation settings — the "Redeem group points" action is disabled in the workflow, so points redeem within the program.`;
-    return `No "Redeem group points" action is configured in this program's workflow, so the system assumes Individual redemption for all points.`;}
+  function gAllowed(){return SCENARIOS[SCi].org;}
+  function gReason(){return `Redemption across programs is inactive in Organisation settings, so every points source redeems within its own program (Individual).`;}
   function setScenario(i){SCi=+i;if(!gAllowed())mode='view';applyScenario();renderScn();renderBuilder();const ov=document.getElementById('setOverlay');if(ov&&ov.classList.contains('open')){const nr=document.getElementById('navRedemption'),np=document.getElementById('navPriority');if(nr&&nr.classList.contains('active'))renderRedemption();if(np&&np.classList.contains('active'))renderPriority();}}
   function renderScn(){
     const s=SCENARIOS[SCi];
-    document.getElementById('scenarioOut').innerHTML=gAllowed()?'→ <b>checkboxes editable</b> in Redemption scope':'→ <b>locked to Individual</b>';
+    document.getElementById('scenarioOut').innerHTML=gAllowed()?'→ <b>editable</b> · all Shared by default':'→ <b>locked to Individual</b>';
     const wf=document.getElementById('wfNote');if(!wf)return;
-    if(!s.org){wf.className='note warn';wf.innerHTML=`<span class="ic">ⓘ</span><span><span class="pfx">Note:&nbsp;</span>Redemption across programs is inactive in Organisation settings, so the "Redeem group points" action is disabled in this workflow. Enable it in Organisation settings to use it.</span>`;}
-    else if(!s.added){wf.className='note warn';wf.innerHTML=`<span class="ic">ⓘ</span><span><span class="pfx">Assumption:&nbsp;</span>No "Redeem group points" action is configured here, so the <b>system assumes Individual</b> redemption for all points. Add the action on the True branch to configure per-type scope.</span>`;}
-    else{wf.className='note tips';wf.innerHTML=`<span class="ic">💡</span><span><span class="pfx">Tips:&nbsp;</span>The per-points-type control lives under this program's <b>Advanced settings › Redemption scope</b>. &nbsp;<button class="cta" onclick="openSettings('redemption')">Open Redemption scope ›</button></span>`;}
+    if(!s.org){wf.className='note warn';wf.innerHTML=`<span class="ic">ⓘ</span><span><span class="pfx">Note:&nbsp;</span>Redemption across programs is inactive in Organisation settings. Enable it there to configure Redemption scope for this program.</span>`;}
+    else{wf.className='note tips';wf.innerHTML=`<span class="ic">💡</span><span><span class="pfx">Tips:&nbsp;</span>Redemption scope lives under this program's <b>Advanced settings › Redemption scope</b>. &nbsp;<button class="cta" onclick="openSettings('redemption')">Open Redemption scope ›</button></span>`;}
   }
 
   /* ---- builder ---- */
   let B={sel:0,openMenu:null,conditions:[]};
   function applyScenario(){
     if(SCi===0) B.conditions=[{name:'Condition 1',whens:[{branch:'True',actions:[{name:'Redeem group points',strategy:'GroupRedemption'}]}]}];
-    else if(SCi===1) B.conditions=[{name:'Condition 1',whens:[{branch:'True',actions:[{name:'Redeem points',strategy:'redemption_config'}]}]}];
-    else B.conditions=[{name:'Condition 1',whens:[{branch:'True',actions:[]}]}];
+    else B.conditions=[{name:'Condition 1',whens:[{branch:'True',actions:[{name:'Redeem group points',strategy:'GroupRedemption',disabled:true}]}]}];
     B.sel=0;B.openMenu=null;
   }
   function actionCount(cd){return cd.whens.reduce((n,w)=>n+w.actions.length,0);}
@@ -418,12 +414,11 @@
         <div>
           <h2>Define redemption scope by points source</h2>
           <div class="prog2">Program: <b>Tata NeuPass</b></div>
-          <p>Choose which points sources can be redeemed across the multi-loyalty program (MLP). Unchecked sources stay <b>Individual</b> — usable only in this program.</p>
+          <p>All points sources are <b>Shared</b> across the multi-loyalty program (MLP) by default — tick a source to keep it <b>Individual</b>, redeemable only within this program.${gAllowed()?'':infoTip(gReason()+' The screen is read-only until this is resolved.')}</p>
         </div>
         <div class="head-actions"></div>
       </div>
       <div class="note pending" id="pendingNote" style="display:none"><span class="ic">⏱</span><span><span class="pfx">Pending:&nbsp;</span>Changes submitted for approval. They go live once an approver signs off.</span></div>
-      <div class="cbx-head">Redeemable across the multi-loyalty program (MLP) — by points source${gAllowed()?'':infoTip(gReason()+' All points are handled as Individual until this is resolved, so all options are unchecked and read-only.')}</div>
       <div class="cbx-list" id="cbxList"></div>
       <div class="scope-foot" id="scopeFoot"></div>`;
     renderCats();renderFoot();
@@ -435,7 +430,7 @@
   function stateTag(on,dis){return `<span class="cbx-state ${on?'grp':'ind'} ${dis?'muted':''}">${on?'Shared':'Individual'}</span>`;}
   function infoTip(text){return `<span class="cap-tip" tabindex="0" aria-label="${text.replace(/"/g,'&quot;')}">ⓘ<span class="cap-tip-bub" role="tooltip">${text}</span></span>`;}
   function renderCats(){
-    const e=editable(); let h='';
+    const e=editable(); const show=gAllowed(); let h='';
     CATS.forEach((c,i)=>{
       if(c.disabled){ // Benefits — shown, not selectable yet
         h+=`<div class="cbx-row dis"><span class="cbx dis"></span><div><div class="cbx-lbl">${c.label}</div><div class="cbx-sub">${c.sub}</div></div><span class="cbx-state muted">Not configurable yet</span></div>`;
@@ -443,13 +438,18 @@
       }
       if(c.expandable){ // Promotional points / Benefits — drill to specific items
         const unit=c.unit||'promotion';
-        if(!gAllowed()){ // locked — accordion not expandable, everything Individual
-          h+=`<div class="cbx-row dis"><span class="cbx dis"></span><div><div class="cbx-lbl">${c.label}</div><div class="cbx-sub">${c.sub}</div></div>${stateTag(false,true)}</div>`;
+        if(!show){ // locked — accordion not expandable, everything Individual
+          h+=`<div class="cbx-row dis"><span class="cbx on dis">✓</span><div><div class="cbx-lbl">${c.label}</div><div class="cbx-sub">${c.sub}</div></div>${stateTag(false,true)}</div>`;
           return;
         }
-        const tot=c.promos.length, g=c.promos.filter(p=>p.group).length;
-        const summ=`${g} of ${tot} Shared`;
-        const allOn=gAllowed()&&g===tot, someOn=gAllowed()&&g>0, pdis=!gAllowed();
+        if(!e){ // retained — read-only, show saved summary (collapsed)
+          const rtot=c.promos.length, rRes=c.promos.filter(p=>!p.group).length, rAll=rRes===rtot, rSome=rRes>0;
+          h+=`<div class="cbx-row dis"><span class="caret" style="visibility:hidden">▸</span><span class="cbx ${rAll?'on':''} ${rSome&&!rAll?'part':''} dis">${rAll?'✓':(rSome?'–':'')}</span><div><div class="cbx-lbl">${c.label}</div><div class="cbx-sub">${c.sub}</div></div><span class="cbx-state muted">${rRes} of ${rtot} Individual</span></div>`;
+          return;
+        }
+        const tot=c.promos.length, gRes=c.promos.filter(p=>!p.group).length;
+        const summ=`${gRes} of ${tot} Individual`;
+        const allOn=gAllowed()&&gRes===tot, someOn=gAllowed()&&gRes>0, pdis=!gAllowed();
         const pbox=`<span class="cbx ${allOn?'on':''} ${someOn&&!allOn?'part':''} ${e?'edit':''} ${pdis?'dis':''}" ${e&&!pdis?`onclick="event.stopPropagation();toggleAllPromos(${i})"`:''}>${allOn?'✓':(someOn?'–':'')}</span>`;
         h+=`<div class="cbx-row cat-parent ${e?'edit':''}" onclick="toggleExpand(${i})"><span class="caret">${c.open?'▾':'▸'}</span>${pbox}<div><div class="cbx-lbl">${c.label}</div><div class="cbx-sub">${c.sub} · set all, or per ${unit}</div></div><span class="cbx-state muted">${gAllowed()?summ:'Individual'}</span></div>`;
         if(c.open){
@@ -459,14 +459,14 @@
           const matches=c.promos.map((pr,j)=>({pr,j})).filter(o=>!q||o.pr.label.toLowerCase().includes(q)||o.pr.sub.toLowerCase().includes(q));
           if(matches.length===0){h+=`<div class="promo-empty"><div class="pe-ic">🔍</div><div class="pe-t">No ${c.plural||unit+'s'} match “${cq}”</div><div class="pe-s">Check the spelling or try a different name or type.</div><button class="pe-clear" onclick="filterPromos(${i},'')">Clear search</button></div>`;}
           matches.forEach(({pr,j})=>{
-            const on=gAllowed()?pr.group:false, dis=!gAllowed();
-            h+=`<div class="cbx-row sub ${e?'edit':''} ${dis?'dis':''}">${box(on,e,dis,`togglePromo(${i},${j})`)}<div><div class="cbx-lbl">${pr.label}</div><div class="cbx-sub">${pr.sub}</div></div>${stateTag(on,dis)}</div>`;
+            const shared=gAllowed()?pr.group:false, dis=!gAllowed();
+            h+=`<div class="cbx-row sub ${e?'edit':''} ${dis?'dis':''}">${box(!shared,e,dis,`togglePromo(${i},${j})`)}<div><div class="cbx-lbl">${pr.label}</div><div class="cbx-sub">${pr.sub}</div></div>${stateTag(shared,dis)}</div>`;
           });
         }
         return;
       }
-      const on=gAllowed()?c.group:false, dis=!gAllowed();
-      h+=`<div class="cbx-row ${e?'edit':''} ${dis?'dis':''}">${box(on,e,dis,`toggleCat(${i})`)}<div><div class="cbx-lbl">${c.label}</div><div class="cbx-sub">${c.sub}</div></div>${stateTag(on,dis)}</div>`;
+      const shared=show?c.group:false, dis=!editable();
+      h+=`<div class="cbx-row ${e?'edit':''} ${dis?'dis':''}">${box(!shared,e,dis,`toggleCat(${i})`)}<div><div class="cbx-lbl">${c.label}</div><div class="cbx-sub">${c.sub}</div></div>${stateTag(shared,dis)}</div>`;
     });
     document.getElementById('cbxList').innerHTML=h;
   }
